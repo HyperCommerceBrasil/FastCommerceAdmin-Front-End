@@ -36,7 +36,6 @@ export const MenuContainer = styled.div<MenuProps>`
         color: black;
       }
       a {
-        font-weight: 700;
         overflow: hidden;
       }
 
@@ -92,7 +91,6 @@ export const MenuItem = styled.li`
 
       &:hover {
         color: #34a3d7;
-        font-weight: 500;
       }
     }
   }

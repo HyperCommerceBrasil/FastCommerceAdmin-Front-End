@@ -65,16 +65,18 @@ const Layout: React.FC<MenuProps> = ({ children, isVisible }) => {
                 height: '24px',
               }}
             >
-              <Link to="/">
-                <FaProductHunt size={16} /> Produtos
-              </Link>
+              <FaProductHunt size={16} /> Produtos
             </AccordionSummary>
 
             <DropdownItems>
               <AccordionDetails id="dropdownmenu">
                 <ul>
-                  <li>Cadastro de Coleções</li>
-                  <li>Cadastro de Produtos</li>
+                  <li>
+                    <Link to="/collections">Cadastro de Coleções</Link>
+                  </li>
+                  <li>
+                    <Link to="/products">Cadastro de Produtos</Link>
+                  </li>
                 </ul>
               </AccordionDetails>
             </DropdownItems>

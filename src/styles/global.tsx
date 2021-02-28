@@ -1,4 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
+import '@pnotify/core/dist/PNotify.css';
+
+import '@pnotify/core/dist/BrightTheme.css';
 
 export default createGlobalStyle`
   * {
@@ -12,7 +15,7 @@ export default createGlobalStyle`
       background: #F5F9F0;
       color: #000;
       -webkit-font-smoothing: antialiased;
-      overflow: hidden;
+
   }
 
   body, input, button {

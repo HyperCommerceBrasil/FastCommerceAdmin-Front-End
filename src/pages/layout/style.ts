@@ -62,6 +62,8 @@ export const Content = styled.div`
 
 export const ContentContent = styled.div`
   padding: 32px;
+  width: 100%;
+  overflow: scroll;
 `;
 
 export const DropdownItens = styled.ul`

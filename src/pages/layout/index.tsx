@@ -13,7 +13,6 @@ import {
   ContentContent,
   DropdownItens,
   ItemDropdown,
-  ArrowBaloon,
 } from './style';
 
 const Layout: React.FC = ({ children }) => {

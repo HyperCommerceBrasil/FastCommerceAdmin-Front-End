@@ -30,7 +30,7 @@ const NewProduct: React.FC = () => {
 
   const history = useHistory();
 
-  CONST
+  // CONST
 
   useEffect(() => {
     async function getCollection(): Promise<void> {

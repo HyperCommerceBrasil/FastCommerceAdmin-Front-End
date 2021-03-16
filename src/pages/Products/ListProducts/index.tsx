@@ -42,7 +42,7 @@ const ListProducts: React.FC = () => {
         const response = await api.get<Product[]>('/products');
         setProducts(response.data);
       } catch (err) {
-        error('Ocorreu um erro ao obter os dado :(');
+        error('Ocorreu um erro ao obter os dados :(');
       }
     }
 

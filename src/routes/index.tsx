@@ -9,6 +9,9 @@ const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Collections = lazy(() => import('../pages/Colections'));
 const ListProducts = lazy(() => import('../pages/Products/ListProducts'));
 const NewProduct = lazy(() => import('../pages/Products/NewProduct'));
+const Register = lazy(() => import('../pages/Register'));
+const Login = lazy(() => import('../pages/Login'));
+
 
 const LoadingBackground: React.FC = () => (
   <Backdrop
@@ -32,6 +35,8 @@ const Routes: React.FC = () => (
       <Route path="/collections" component={() => <Collections />} />
       <Route path="/products" component={() => <ListProducts />} exact />
       <Route path="/products/new" component={() => <NewProduct />} />
+      <Route path="/register" component={() => <Register />} exact />
+      <Route path="/login" component={() => <Login />} exact />
     </Suspense>
   </Switch>
 );

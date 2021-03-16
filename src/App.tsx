@@ -9,9 +9,9 @@ const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
-        <Layout>
+        {/* <Layout> */}
           <Routes />
-        </Layout>
+        {/* </Layout> */}
 
         <GlobalStyle />
       </BrowserRouter>

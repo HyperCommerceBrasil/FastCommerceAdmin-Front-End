@@ -4,8 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { format } from 'date-fns';
 
 // import { FaBoxes, FaDollarSign } from 'react-icons/fa';
-// import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+
+
 import { success, error } from '@pnotify/core';
 import {
   Backdrop,
@@ -42,7 +42,6 @@ interface ICollection {
 const Collection: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [load, setLoad] = useState(true);
-  const [errorLoad, setErrorLoad] = useState('');
   const [collections, setCollections] = useState<ICollection[]>([]);
   const [collectionName, setCollectionName] = useState<string>('');
   const [loader, setLoader] = useState(false);
@@ -62,7 +61,7 @@ const Collection: React.FC = () => {
       setLoader(false);
       error({ type: 'error', text: 'Ocorreu um erro ao criar a collection' });
     }
-  }, [collectionName, collections]);
+  }, [collectionName, collections, openModal]);
 
   useEffect(() => {
     async function getCollections(): Promise<void> {
@@ -73,7 +72,7 @@ const Collection: React.FC = () => {
         setLoad(false);
       } catch {
         setLoad(false);
-        setErrorLoad('Ocorreu um erro ao trazer os dados do sistema');
+        
       }
     }
 
@@ -95,12 +94,7 @@ const Collection: React.FC = () => {
     [collections],
   );
 
-  const columns: ColDef[] = [
-    { field: 'name', headerName: 'Name', width: 500 },
-    { field: 'created_at', headerName: 'Data de Criação', width: 400 },
-    { field: 'updated_at', headerName: 'Data de Atualização', width: 400 },
-    { field: 'Opções', headerName: 'Opções', width: 400 },
-  ];
+
 
   return (
     <>

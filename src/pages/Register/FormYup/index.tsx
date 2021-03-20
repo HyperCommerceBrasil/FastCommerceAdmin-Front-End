@@ -1,5 +1,5 @@
-import React from 'react'
-import { withFormik, Form, Field, ErrorMessage } from 'formik'
+import React, { useCallback } from 'react'
+import { Form, Field, ErrorMessage, Formik } from 'formik'
 import * as Yup from 'yup'
 import { Wrapper } from './styles'
 import api from '../../../service/api';
@@ -34,48 +34,53 @@ const MyForm = () => {
       .email('Informe um email válido!')
   })
 
-  const enhanceWithFormik = withFormik({
-    mapPropsToValues: () => ({ name: '', email: '', password: '' }),
-    handleSubmit: async (user: User) => {
-      console.log(user);
-      try{
-        await api.post<User>('/users', user);
-        alert({
-          type: 'success',
-          text: 'Usuário criado com sucesso!'
-        });
-        history.push('/login');
-      }catch(err){
-        alert({
-          type: 'error',
-          text: err.response.data.message
-        });
-      }
-    },
-    isInitialValid: false,
-    validateOnChange: true,
-    validateOnBlur: true,
-    displayName: 'MyForm',
-    validationSchema: schema
-  })
+
+  const handleSaveUser = useCallback(async (user: User) => {
+    console.log(user);
+    try{
+      await api.post<User>('/users', user);
+      alert({
+        type: 'success',
+        text: 'Usuário criado com sucesso!'
+      });
+      history.push('/login');
+    }catch(err){
+      alert({
+        type: 'error',
+        text: err.response.data.message
+      });
+    }
+  
+  }, [history])
+  
 
   return (
     <Wrapper>
-      <Form>
-        <div>
-          <Field name="name" placeholder="Nome" /> <br />
-          <ErrorMessage name="name" />
-        </div>
-        <div>
-          <Field name="email" placeholder="Email" /> <br />
-          <ErrorMessage name="email" />
-        </div>
-        <div>
-          <Field name="password" placeholder="Senha" type="password"/> <br />
-          <ErrorMessage name="password" />
-        </div>
-        <button type="submit">CRIAR CONTA</button>
-      </Form>
+      <Formik
+        initialValues={{ email: '', password: '', name: '' }}
+        validationSchema={schema}
+        validateOnBlur={false}
+        validateOnChange={false}
+        onSubmit={handleSaveUser}>
+
+        <Form>
+          <div>
+            <Field name="name" placeholder="Nome" /> <br />
+            <ErrorMessage name="name" />
+          </div>
+          <div>
+            <Field name="email" placeholder="Email" /> <br />
+            <ErrorMessage name="email" />
+          </div>
+          <div>
+            <Field name="password" placeholder="Senha" type="password"/> <br />
+            <ErrorMessage name="password" />
+          </div>
+          <button type="submit">CRIAR CONTA</button>
+        </Form>
+
+      </Formik>
+   
     </Wrapper>
   )
 }

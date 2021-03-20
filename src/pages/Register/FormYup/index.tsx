@@ -2,34 +2,63 @@ import React from 'react'
 import { withFormik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { Wrapper } from './styles'
+import api from '../../../service/api';
+import { alert } from '@pnotify/core';
+import { useHistory } from 'react-router-dom';
 
-const schema = Yup.object().shape({
-  name: Yup.string()
-    .required('Informe o nome!')
-    .min(5, 'O nome deve conter mais de 5 letras!')
-    .max(100, 'O nome deve conter menos de 100 letras!')
-    .notOneOf(['admin', 'administrador'], 'Esse nome não pode camarada!'),
-  password: Yup.string()
-    .required('Informe a senha!')
-    .min(8, 'A senha deve conter mais de 8 letras!'),
-  email: Yup.string()
-    .required('Informe o email!')
-    .email('Informe um email válido!')
-})
+interface User {
+  email: string;
+  name: string;
+  password: string;
+}
 
-const enhanceWithFormik = withFormik({
-  mapPropsToValues: () => ({ name: '', email: '', password: '' }),
-  handleSubmit: values => {
-    console.log(values)
-  },
-  isInitialValid: false,
-  validateOnChange: true,
-  validateOnBlur: true,
-  displayName: 'MyForm',
-  validationSchema: schema
-})
+
+
+
+
 
 const MyForm = () => {
+  const history = useHistory();
+
+  const schema = Yup.object().shape({
+    name: Yup.string()
+      .required('Informe o nome!')
+      .min(5, 'O nome deve conter mais de 5 letras!')
+      .max(100, 'O nome deve conter menos de 100 letras!')
+      .notOneOf(['admin', 'administrador'], 'Esse nome não pode camarada!'),
+    password: Yup.string()
+      .required('Informe a senha!')
+      .min(8, 'A senha deve conter mais de 8 letras!'),
+    email: Yup.string()
+      .required('Informe o email!')
+      .email('Informe um email válido!')
+  })
+
+  const enhanceWithFormik = withFormik({
+    mapPropsToValues: () => ({ name: '', email: '', password: '' }),
+    handleSubmit: async (user: User) => {
+      console.log(user);
+      try{
+        await api.post<User>('/users', user);
+        alert({
+          type: 'success',
+          text: 'Usuário criado com sucesso!'
+        });
+        history.push('/login');
+      }catch(err){
+        alert({
+          type: 'error',
+          text: err.response.data.message
+        });
+      }
+    },
+    isInitialValid: false,
+    validateOnChange: true,
+    validateOnBlur: true,
+    displayName: 'MyForm',
+    validationSchema: schema
+  })
+
   return (
     <Wrapper>
       <Form>
@@ -51,4 +80,4 @@ const MyForm = () => {
   )
 }
 
-export default enhanceWithFormik(MyForm)
+export default MyForm;

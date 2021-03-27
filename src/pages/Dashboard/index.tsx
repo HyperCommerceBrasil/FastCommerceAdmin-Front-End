@@ -3,12 +3,14 @@ import React from 'react';
 import { FaBoxes, FaDollarSign } from 'react-icons/fa';
 import { Container, Content, CardCustom } from './style';
 import Card from '../../components/Card';
+import Layout from '../layout';
 
 const Dashboard: React.FC = () => {
 
 
   return (
-    <Container>
+    <Layout>
+ <Container>
       <h1>Dashboard</h1>
 
       <Content>
@@ -33,6 +35,8 @@ const Dashboard: React.FC = () => {
         </div>
       </CardCustom>
     </Container>
+    </Layout>
+   
   );
 };
 

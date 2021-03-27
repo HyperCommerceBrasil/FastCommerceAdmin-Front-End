@@ -15,7 +15,9 @@ import {
   ContentForm,
   FormGroup,
 } from './styles';
-import api from '../../../service/api';
+import api from '../../../services/api';
+
+import Layout from './../../layout';
 
 interface Collection {
   id: string;
@@ -44,7 +46,8 @@ const NewProduct: React.FC = () => {
   }, []);
   return (
     <>
-      <Container>
+    <Layout>
+<Container>
         <header>
           <FaArrowLeft
             cursor="pointer"
@@ -188,6 +191,8 @@ const NewProduct: React.FC = () => {
           </div>
         </Content>
       </Container>
+    </Layout>
+      
     </>
   );
 };

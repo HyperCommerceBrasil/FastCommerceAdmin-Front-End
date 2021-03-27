@@ -15,7 +15,7 @@ import {
   ContentForm,
   FormGroup,
 } from './styles';
-import api from '../../../service/api';
+import api from '../../../services/api';
 
 interface Collection {
   id: string;

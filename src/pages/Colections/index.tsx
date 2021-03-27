@@ -28,7 +28,7 @@ import {
   FooterModal,
 } from './style';
 import ModalCustom from '../../components/Modal';
-import api from '../../service/api';
+import api from '../../services/api';
 
 // import Card from '../../components/Card';
 

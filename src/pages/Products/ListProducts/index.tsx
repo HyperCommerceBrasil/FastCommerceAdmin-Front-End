@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import { error } from '@pnotify/core';
-import api from '../../../service/api';
+import api from '../../../services/api';
 
 import { Container, Content, CardCustom, CardFooter } from './styles';
 

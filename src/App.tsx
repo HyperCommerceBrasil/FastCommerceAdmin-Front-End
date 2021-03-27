@@ -10,10 +10,6 @@ const App: React.FC = () => {
     <>
       <BrowserRouter>
           <Routes />
-
-        {/* <Layout> */}
-        {/* </Layout> */}
-
         <GlobalStyle />
       </BrowserRouter>
     </>

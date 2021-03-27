@@ -17,6 +17,8 @@ import {
 } from './styles';
 import api from '../../../services/api';
 
+import Layout from './../../layout';
+
 interface Collection {
   id: string;
   name: string;
@@ -44,7 +46,8 @@ const NewProduct: React.FC = () => {
   }, []);
   return (
     <>
-      <Container>
+    <Layout>
+<Container>
         <header>
           <FaArrowLeft
             cursor="pointer"
@@ -188,6 +191,8 @@ const NewProduct: React.FC = () => {
           </div>
         </Content>
       </Container>
+    </Layout>
+      
     </>
   );
 };

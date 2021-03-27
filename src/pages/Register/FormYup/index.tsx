@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Form, Field, ErrorMessage, Formik } from 'formik'
 import * as Yup from 'yup'
 import { Wrapper } from './styles'
-import api from '../../../service/api';
+import api from '../../../services/api';
 import { alert } from '@pnotify/core';
 import { useHistory } from 'react-router-dom';
 
@@ -36,7 +36,7 @@ const MyForm = () => {
 
 
   const handleSaveUser = useCallback(async (user: User) => {
-    console.log(user);
+   
     try{
       await api.post<User>('/users', user);
       alert({

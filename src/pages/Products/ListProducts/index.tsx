@@ -5,7 +5,7 @@ import { error } from '@pnotify/core';
 import api from '../../../services/api';
 
 import { Container, Content, CardCustom, CardFooter } from './styles';
-
+import Layout from './../../layout';
 interface Product {
   id: string;
   name: string;
@@ -51,7 +51,8 @@ const ListProducts: React.FC = () => {
 
   return (
     <>
-      <Container>
+    <Layout>
+<Container>
         <header>
           <h1>Produtos</h1>
           <button
@@ -104,6 +105,8 @@ const ListProducts: React.FC = () => {
           ))}
         </Content>
       </Container>
+    </Layout>
+      
     </>
   );
 };

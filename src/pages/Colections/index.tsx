@@ -29,6 +29,7 @@ import {
 } from './style';
 import ModalCustom from '../../components/Modal';
 import api from '../../services/api';
+import Layout from '../layout';
 
 // import Card from '../../components/Card';
 
@@ -98,7 +99,8 @@ const Collection: React.FC = () => {
 
   return (
     <>
-      <Backdrop
+    <Layout>
+ <Backdrop
         open={loader}
         style={{
           position: 'absolute',
@@ -226,6 +228,8 @@ const Collection: React.FC = () => {
           </TableContainer>
         </CardCustom>
       </Container>
+    </Layout>
+     
     </>
   );
 };

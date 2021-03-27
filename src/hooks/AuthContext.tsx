@@ -27,8 +27,8 @@ const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState(() => {
-    const token = localStorage.getItem('@ELearned:token');
-    const user = localStorage.getItem('@ELearned:user');
+    const token = localStorage.getItem('@FastCommerce:token');
+    const user = localStorage.getItem('@FastCommerce:user');
 
     if (user && token) {
       api.defaults.headers.authorization = `Bearer ${token}`;

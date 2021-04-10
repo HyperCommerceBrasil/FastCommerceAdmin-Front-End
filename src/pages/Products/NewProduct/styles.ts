@@ -19,47 +19,49 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  background: white;
-  padding: 5vh 0vw;
-`;
-
-export const GridImages = styled.div`
-  border: 1px solid black;
-  display: 'flex';
-  flex-wrap: 'wrap';
-  justify-content: 'space-around';
-  overflow-y: scroll;
-  height: 350px;
-  width: 500px;
-  img {
-    height: 150px;
-    width: 150px;
-  }
-`;
-
-export const FormCustom = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-
-  div {
-    margin: 8px 16px;
-    width: 100%;
-  }
-  margin-bottom: 16px;
-`;
-
-export const ContentForm = styled.div`
+  padding: 16px;
+  background: white;
   display: flex;
+  flex: 1;
   flex-direction: row;
 
   form {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
   }
+`;
+
+export const ContentDropZone = styled.div`
+  border: 1px solid silver;
+  margin: 16px;
+  padding: 8px;
+  width: 350px;
+  max-height: 400px;
+  min-width: 320px;
+  border-style: dotted;
+
+
+
+  display: flex;
+
+  p{
+    text-align: center;
+    margin: auto;
+  }
+`;
+
+
+
+
+export const ContentForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  div {
+    margin: 8px 0;
+    width: 100%;
+  }
+
 `;
 
 export const FormGroup = styled.div`

@@ -162,9 +162,12 @@ const NewProduct: React.FC = () => {
                 apiKey="vrzyvdpq0s7ufjhjrhrcysrwkvwwk2tbzrpq02d7k5m1knqg"
                 onEditorChange={handleEditorChange}
                 init={{
-                  plugins: "fullscreen",
-      
-                  fullscreen_native: true
+                  plugins: "print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons",
+                  toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                  autosave_ask_before_unload: true,
+                  fullscreen_native: true,
+                  image_advtab: true,
+                  importcss_append: true,
                 }}
               /> 
 
@@ -181,7 +184,6 @@ const NewProduct: React.FC = () => {
                 </Button>
               </form>
             
-          
         </Content>
       </Container>
     </Layout>

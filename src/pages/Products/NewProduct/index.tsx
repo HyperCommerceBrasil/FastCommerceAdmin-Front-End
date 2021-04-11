@@ -23,7 +23,7 @@ import api from '../../../services/api';
 
 
 import Layout from './../../layout';
-import { Form, Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 interface Collection {
   id: string;
@@ -53,7 +53,7 @@ const NewProduct: React.FC = () => {
   const handleEditorChange = useCallback(async (content, editor) => {
     
      setEditorContent(content);
-   
+    // eslint-disable-next-line
    }, [editorContent])
 
   useEffect(() => {
@@ -73,14 +73,14 @@ const NewProduct: React.FC = () => {
     data.details = editorContent;
 
     try {
-       const response = await api.post("/products", data);
+       await api.post("/products", data);
 
        success("Registro Salve com sucesso")
        history.push("/products");
     } catch {
         error("Ocorreu um erro na válidação")
     }
-  
+  // eslint-disable-next-line
   }, [editorContent])
 
    const onDrop = useCallback(acceptedFiles => {

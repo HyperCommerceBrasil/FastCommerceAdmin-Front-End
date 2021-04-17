@@ -32,6 +32,7 @@ interface Collection {
 
 
 interface Product {
+    id?: string
     name: string;
     price: string;
     ean: string;
@@ -42,6 +43,8 @@ interface Product {
 const NewProduct: React.FC = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [editorContent, setEditorContent] = useState("");
+  const [imageProduct, setImageProduct] = useState("");
+  const [fileImageProduct, setFileImageProduct] = useState();
 
 
   const history = useHistory();
@@ -73,9 +76,16 @@ const NewProduct: React.FC = () => {
     data.details = editorContent;
 
     try {
-       await api.post("/products", data);
+       const response = await api.post<Product>("/products", data); 
 
-       success("Registro Salve com sucesso")
+       const dataFile = new FormData();
+
+       dataFile.append("productImage", fileImageProduct || "")
+       dataFile.append("productId", response.data.id || "")
+
+       await api.post("products/upload/image", dataFile)
+
+       success("Registro Salvo com sucesso")
        history.push("/products");
     } catch {
         error("Ocorreu um erro na válidação")
@@ -84,10 +94,17 @@ const NewProduct: React.FC = () => {
   }, [editorContent])
 
    const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
+     const reader = new FileReader();
+    setFileImageProduct(acceptedFiles[0]);
+    reader.onload = (restImage) => {
+      const imagePreview = restImage.target?.result || ""
+      setImageProduct(String(imagePreview))
+    }
+
+    reader.readAsDataURL(acceptedFiles[0])
   }, [])
 
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const {getRootProps, getInputProps, isDragActive} = useDropzone({accept: ["image/jpeg", "image/pjpeg", "image/png", "image/gif"], onDrop})
 
 
   const formik = useFormik({
@@ -130,9 +147,21 @@ const NewProduct: React.FC = () => {
             <ContentDropZone {...getRootProps()}>
               <input {...getInputProps()} />
               {
-                isDragActive ?
-                  <p>Solte a Image</p> :
-                  <p>Arraste ou clique aqui para selecionar a imagem</p>
+                isDragActive ? (
+                <div>
+                      Solte a Imagem
+                </div>
+                  
+                )
+                : (
+                    <div>
+                    <img src={imageProduct} alt="Imagem Preview"></img>
+                    {imageProduct === "" ?  <p>Arraste ou clique aqui para selecionar a imagem</p> : ""}
+                         
+                    </div>
+                   
+                  )
+                  
               }
           </ContentDropZone>
          

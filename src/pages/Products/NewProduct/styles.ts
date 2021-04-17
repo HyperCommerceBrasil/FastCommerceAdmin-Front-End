@@ -36,12 +36,26 @@ export const ContentDropZone = styled.div`
   margin: 16px;
   padding: 8px;
   width: 350px;
+  transition: 0.7 ease-in-out;
+  div {
+    margin: auto;
+   
+  }
+
+  &:hover {
+    border: #1698D3 solid 1px;
+    border-radius: 5px;
+  }
+  
   max-height: 400px;
   min-width: 320px;
   border-style: dotted;
 
 
-
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
   display: flex;
 
   p{

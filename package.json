@@ -21,6 +21,8 @@
     "eslint": "^6.6.0",
     "eslint-import-resolver-typescript": "^2.2.1",
     "formik": "^2.2.6",
+    "formik-material-fields": "^0.0.6",
+    "formik-material-ui": "^3.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.3.2",

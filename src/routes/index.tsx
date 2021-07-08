@@ -3,16 +3,16 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Switch } from 'react-router-dom';
 
-import Route  from './Route';
+import Route from './Route';
+
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Collections = lazy(() => import('../pages/Colections'));
 const ListProducts = lazy(() => import('../pages/Products/ListProducts'));
+const ListCustomer = lazy(() => import('../pages/Customer/ListCustomer'));
+
 const NewProduct = lazy(() => import('../pages/Products/NewProduct'));
 const Register = lazy(() => import('../pages/Register'));
 const Login = lazy(() => import('../pages/Login'));
-
-
-
 
 const LoadingBackground: React.FC = () => (
   <Backdrop
@@ -32,16 +32,34 @@ const LoadingBackground: React.FC = () => (
 const Routes: React.FC = () => (
   <Switch>
     <Suspense fallback={<LoadingBackground />}>
-     
-     
       <Route path="/" component={() => <Dashboard />} exact />
       <Route path="/collections" isPrivate component={() => <Collections />} />
-      <Route path="/products" isPrivate component={() => <ListProducts />} exact />
-      <Route path="/products/new" isPrivate component={() => <NewProduct />} exact/>
+      <Route
+        path="/products"
+        isPrivate
+        component={() => <ListProducts />}
+        exact
+      />
+      <Route
+        path="/customers"
+        isPrivate
+        component={() => <ListCustomer />}
+        exact
+      />
+      ;
+      <Route
+        path="/products/new"
+        isPrivate
+        component={() => <NewProduct />}
+        exact
+      />
       <Route path="/register" isPrivate component={() => <Register />} exact />
-
-    
-      <Route path="/login" isPrivate={false} component={() => <Login />} exact />
+      <Route
+        path="/login"
+        isPrivate={false}
+        component={() => <Login />}
+        exact
+      />
     </Suspense>
   </Switch>
 );

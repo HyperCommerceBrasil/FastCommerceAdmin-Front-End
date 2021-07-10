@@ -12,6 +12,7 @@ export const MessageError = styled.div`
 export const ContentInput = styled.div<ContentProps>`
   height: 50px;
   width: 100%;
+
   display: flex;
   flex-direction: row;
   border: 1px silver solid;

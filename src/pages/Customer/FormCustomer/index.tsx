@@ -4,6 +4,7 @@ import { error } from '@pnotify/core';
 import * as Yup from 'yup';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
+import { formatCPF } from '../../../utils/masks/cpfMask';
 
 import { FormCustom } from './styles';
 
@@ -17,13 +18,16 @@ interface Customer {
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
   functionAction: any;
   customer?: Customer;
+  disabledPassword?: string;
 }
 
-const FormCustomer: React.FC<FormProps> = ({ functionAction, ...rest }) => {
+const FormCustomer: React.FC<FormProps> = ({
+  customer,
+  disabledPassword,
+  functionAction,
+  ...rest
+}) => {
   const schema = Yup.object().shape({
-    password: Yup.string()
-      .required('Informe a senha!')
-      .min(8, 'A senha deve conter mais de 8 letras!'),
     email: Yup.string()
       .required('Informe o email!')
       .email('Informe um email válido!'),
@@ -34,14 +38,27 @@ const FormCustomer: React.FC<FormProps> = ({ functionAction, ...rest }) => {
     <>
       <FormCustom>
         <Formik
-          initialValues={{ name: '', email: '', password: '' }}
+          enableReinitialize
+          initialValues={{
+            name: customer?.name,
+            email: customer?.email,
+            password: '',
+            cpf: formatCPF(String(customer?.cpf)),
+          }}
           onSubmit={functionAction}
           validationSchema={schema}
         >
           <Form>
             <Input name="name" label="Nome do Cliente" />
             <Input name="email" label="E-mail" />
-            <Input name="password" type="password" label="Password" />
+            <Input
+              disabled={disabledPassword}
+              placeholder={disabledPassword ? 'Campo Bloqueado :(' : ''}
+              cursor="pointer"
+              name="password"
+              type="password"
+              label="Password"
+            />
             <Input name="cpf" type="text" label="CPF" />
             <Button colorTheme="primary">Salvar</Button>
           </Form>

@@ -25,9 +25,6 @@ const Paginate: React.FC<PaginateProps> = ({ nPages }) => {
   return (
     <>
       <Pagination>
-        <li>
-          <a href="#">«</a>
-        </li>
         {pages.map(page => {
           return (
             <li key={page}>
@@ -35,9 +32,6 @@ const Paginate: React.FC<PaginateProps> = ({ nPages }) => {
             </li>
           );
         })}
-        <li>
-          <a href="#">»</a>
-        </li>
       </Pagination>
     </>
   );

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useEffect, useCallback } from 'react';
 import { error, success } from '@pnotify/core';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
-import { FaCheckCircle, FaMapMarkedAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaCheckCircle, FaMapMarkedAlt } from 'react-icons/fa';
 import api from '../../../services/api';
 import Layout from '../../layout';
 
@@ -51,7 +51,7 @@ const ListCustomer: React.FC = () => {
   }, []);
   const handleUpdate = useCallback(async data => {
     try {
-      const response = await api.put('/customers', data);
+      const response = await api.put(`/admin/customers/${idCustomer}`, data);
 
       if (response.data) {
         success('Registro Atualizado com sucesso');
@@ -60,6 +60,8 @@ const ListCustomer: React.FC = () => {
       if (err) error(err.response.data.message);
     }
   }, []);
+
+  const history = useHistory();
 
   return (
     <>
@@ -73,10 +75,22 @@ const ListCustomer: React.FC = () => {
         </ModalCustom>
         <Container>
           <header>
+            <FaArrowLeft
+              size={32}
+              cursor="pointer"
+              style={{ marginRight: '32px' }}
+              onClick={() => {
+                history.goBack();
+              }}
+            />
             <h1>Editar Cliente</h1>
           </header>
           <Content>
-            <FormCustomer functionAction={handleUpdate} />
+            <FormCustomer
+              functionAction={handleUpdate}
+              disabledPassword="disabled"
+              customer={customer}
+            />
 
             <SectionAddress>
               <h1>Endereços </h1>

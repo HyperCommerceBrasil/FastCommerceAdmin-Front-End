@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useEffect, useCallback } from 'react';
 import { error, success } from '@pnotify/core';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import api from '../../../services/api';
 import Layout from '../../layout';
 import Modal from '../../../components/Modal';
 import Paginate from '../../../components/paginate';
+import { formatCPF } from '../../../utils/masks/cpfMask';
 
 import FormCustomer from '../FormCustomer';
 
@@ -16,6 +18,7 @@ import Loader from '../../../components/Loader/LinearLoader';
 import CircularLoader from '../../../components/Loader/SpinnerLoader';
 
 interface Customer {
+  id: string;
   name: string;
   email: string;
   cpf: string;
@@ -84,6 +87,8 @@ const ListCustomer: React.FC = () => {
     getCustomers();
   }, []);
 
+  const history = useHistory();
+
   return (
     <>
       <Layout>
@@ -93,11 +98,18 @@ const ListCustomer: React.FC = () => {
         </Modal>
         <Container>
           <header>
+            <FaArrowLeft
+              size={32}
+              cursor="pointer"
+              style={{ marginRight: '32px' }}
+              onClick={() => {
+                history.goBack();
+              }}
+            />
             <Title>Clientes</Title>
-
             <ButtonsHeader>
               <Button
-                colorTheme="secondary"
+                colorTheme="primary"
                 onClick={() => {
                   setShowModal(!showModal);
                 }}
@@ -122,10 +134,16 @@ const ListCustomer: React.FC = () => {
                   return (
                     <tr key={customer.email}>
                       <td>{customer.name}</td>
-                      <td>{customer.cpf}</td>
+                      <td>{formatCPF(customer.cpf || '')}</td>
                       <td>{customer.email}</td>
                       <td>
-                        <button>Editar</button>
+                        <button
+                          onClick={() => {
+                            history.push(`/customers/update/${customer.id}`);
+                          }}
+                        >
+                          Editar
+                        </button>
                       </td>
                     </tr>
                   );

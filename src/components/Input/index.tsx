@@ -9,15 +9,24 @@ import {
 
 import { ContentInput, Container, MessageError } from './style';
 
-interface CardProps extends HTMLAttributes<HTMLInputElement> {
+interface InputProps extends HTMLAttributes<HTMLInputElement> {
   Icon?: IconType;
   label: string;
   name: string;
   type?: string;
   errors?: any;
+  disabled?: string;
+  cursor?: string;
 }
 
-const Input: React.FC<CardProps> = ({ children, label, Icon, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  disabled,
+  cursor,
+  children,
+  label,
+  Icon,
+  ...rest
+}) => {
   const [field, meta, helpers] = useField({
     ...rest,
   });
@@ -31,7 +40,7 @@ const Input: React.FC<CardProps> = ({ children, label, Icon, ...rest }) => {
         </MessageError>
 
         <ContentInput error={!!meta.error}>
-          <Field {...rest} />
+          <Field cursor="not-allowed" disabled={disabled} {...rest} />
 
           <FaExclamationCircle
             size={24}

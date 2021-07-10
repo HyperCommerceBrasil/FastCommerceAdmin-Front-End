@@ -6,6 +6,7 @@ import {
   FaProductHunt,
   FaDollarSign,
   FaChevronRight,
+  FaUsers,
 } from 'react-icons/fa';
 
 import Accordion from '@material-ui/core/Accordion';
@@ -44,6 +45,13 @@ const Layout: React.FC<MenuProps> = ({ children, isVisible }) => {
               </Link>
             </AccordionSummary>
           </Accordion>
+        </MenuItem>
+        <MenuItem>
+          <AccordionSummary>
+            <Link to="/customers">
+              <FaUsers size={16} /> Clientes
+            </Link>
+          </AccordionSummary>
         </MenuItem>
         <MenuItem>
           <Accordion

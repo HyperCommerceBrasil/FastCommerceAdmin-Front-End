@@ -9,6 +9,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden;
 
   header {
     display: flex;
@@ -19,20 +20,25 @@ export const Container = styled.div`
     padding: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
+
+    button {
+      background: transparent;
+      border: transparent;
+    }
   }
   svg {
     color: #34a3d7;
   }
+`;
 
-  button {
-    height: 30px;
-    width: 30px;
-    background: transparent;
-    border: transparent;
-    margin-left: 64px;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
+export const ButtonHeader = styled.div`
+  height: 30px;
+  width: 30px;
+  background: transparent;
+  border: transparent;
+  margin-left: 64px;
+  margin-top: auto;
+  margin-bottom: auto;
 `;
 
 export const Options = styled.div`

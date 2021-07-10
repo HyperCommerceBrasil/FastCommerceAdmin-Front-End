@@ -9,6 +9,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   Icon?: IconType;
   title?: string;
   subtitle?: string;
+  iconColor?: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -17,11 +18,12 @@ const Card: React.FC<CardProps> = ({
   Icon,
   title,
   subtitle,
+  iconColor,
+  ...rest
 }) => {
   return (
-    <CardContainer color={color}>
-      {Icon && <Icon size={32} color="white" />}
-      {!Icon && <FaDollarSign color="white" size={32} />}
+    <CardContainer color={color} {...rest}>
+      {Icon && <Icon size={32} color={iconColor || 'black'} />}
 
       <ContentCard>
         <Title>{title}</Title>

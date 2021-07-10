@@ -10,14 +10,14 @@ export const CardContainer = styled.div<CardProps>`
   border: 1px solid silver;
   height: auto;
   border-radius: 20px;
-  padding: 25px;
-  color: ${props => (props.color === '#fff' ? 'black' : 'white')};
+  padding: 10px;
+  color: ${props => (props.color === '#fff' || 'white' ? 'black' : 'white')};
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   svg {
     margin: auto 0;
+    margin-left: 32px;
   }
 `;
 
@@ -32,6 +32,8 @@ export const ContentCard = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   font-weight: 400;
+  font-weight: 700;
+  margin-bottom: 16px;
 `;
 
 export const Subtitle = styled.p`

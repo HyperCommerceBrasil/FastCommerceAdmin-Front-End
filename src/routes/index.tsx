@@ -9,6 +9,7 @@ const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Collections = lazy(() => import('../pages/Colections'));
 const ListProducts = lazy(() => import('../pages/Products/ListProducts'));
 const ListCustomer = lazy(() => import('../pages/Customer/ListCustomer'));
+const UpdateCustomer = lazy(() => import('../pages/Customer/UpdateCustomer'));
 
 const NewProduct = lazy(() => import('../pages/Products/NewProduct'));
 const Register = lazy(() => import('../pages/Register'));
@@ -46,7 +47,12 @@ const Routes: React.FC = () => (
         component={() => <ListCustomer />}
         exact
       />
-      ;
+      <Route
+        path="/customers/update/:idCustomer"
+        isPrivate
+        component={() => <UpdateCustomer />}
+      />
+
       <Route
         path="/products/new"
         isPrivate

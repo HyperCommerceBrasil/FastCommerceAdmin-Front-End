@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { FaAlignLeft } from 'react-icons/fa';
-import {useAuth} from './../../hooks/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 import logo from '../../assets/logo.png';
 
 import Menu from './menu';
@@ -13,13 +13,14 @@ import {
   ContentContent,
   DropdownItens,
   ItemDropdown,
+  ButtonHeader,
 } from './style';
 
 const Layout: React.FC = ({ children }) => {
   const [showMenu, setShowMenu] = useState(true);
   const [showUserOptions, setUserOptions] = useState(false);
 
-  const {signOut} = useAuth();
+  const { signOut } = useAuth();
 
   return (
     <Container>
@@ -48,9 +49,10 @@ const Layout: React.FC = ({ children }) => {
               alt="user"
             />
           </button>
+
           <DropdownItens>
             <ItemDropdown>
-              <button type="button" onClick={signOut}>Sair</button>
+              <ButtonHeader onClick={signOut}>Sair</ButtonHeader>
             </ItemDropdown>
           </DropdownItens>
         </Options>

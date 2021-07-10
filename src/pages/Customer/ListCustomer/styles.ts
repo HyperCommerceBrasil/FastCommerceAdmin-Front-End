@@ -86,9 +86,19 @@ export const Content = styled.div`
         tr {
           border: none;
           display: table-row;
+          background: white;
+          border: 3px transparent solid;
 
           &:nth-child(odd) {
             background: #eee;
+          }
+
+          transition: ease-in-out 0.6s;
+          &:hover {
+            opacity: 0.8;
+            border: 3px #169ddd solid;
+            margin: 1px;
+            cursor: pointer;
           }
 
           td {
@@ -131,19 +141,4 @@ export const Title = styled.div`
 export const ButtonsHeader = styled.div`
   margin-left: auto;
   margin-right: 50px;
-
-  button {
-    width: 150px;
-    height: 40px;
-    border-radius: 8px;
-    background: #e9be4f;
-    padding: 5px;
-    color: white;
-    font-weight: 400;
-    transition: 1s;
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
 `;

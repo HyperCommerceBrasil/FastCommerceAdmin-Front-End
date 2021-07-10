@@ -48,7 +48,7 @@ const Layout: React.FC<MenuProps> = ({ children, isVisible }) => {
         </MenuItem>
         <MenuItem>
           <AccordionSummary>
-            <Link to="/">
+            <Link to="/customers">
               <FaUsers size={16} /> Clientes
             </Link>
           </AccordionSummary>

@@ -12,6 +12,7 @@ export const ModalBody = styled.div<ModalOptions>`
   display: ${props => (props.show ? 'block' : 'none')}; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
+  transition: 1s;
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
@@ -27,6 +28,7 @@ export const ModalContent = styled.div<ModalContent>`
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
+  transition: 1s;
   width: ${props => (props.widthModal ? props.widthModal : '80%')};
 `;
 

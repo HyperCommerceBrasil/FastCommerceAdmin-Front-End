@@ -70,7 +70,7 @@ const ListCustomer: React.FC = () => {
         setCustomers(customers.data.customers);
         setNumPages(customers.data.totalPages);
       } catch (err) {
-        alert(err.response.data.message);
+        error(err.response.data.message);
       }
     }
 

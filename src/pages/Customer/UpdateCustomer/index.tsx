@@ -37,7 +37,7 @@ const ListCustomer: React.FC = () => {
 
         setCustomer(response.data);
       } catch (err) {
-        alert(err.response.data.message);
+        // alert(err.response.data.message);
       }
     }
 
@@ -52,7 +52,7 @@ const ListCustomer: React.FC = () => {
           success('Registro Atualizado com sucesso');
         }
       } catch (err) {
-        if (err) error(err.response.data.message);
+        // if (err) error(err.response.data.message);
       }
     },
     [idCustomer],

@@ -1,6 +1,5 @@
-import React, { HTMLAttributes, useCallback, useState } from 'react';
+import React, { HTMLAttributes } from 'react';
 import { Form, Formik } from 'formik';
-import { error } from '@pnotify/core';
 import * as Yup from 'yup';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';

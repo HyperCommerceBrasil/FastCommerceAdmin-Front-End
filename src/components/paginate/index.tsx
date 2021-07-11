@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import { Pagination } from './style';
 
 interface PaginateProps {
@@ -7,25 +6,22 @@ interface PaginateProps {
 }
 
 const Paginate: React.FC<PaginateProps> = ({ nPages }) => {
-  const [pages, setPages] = useState<number[]>([]);
+  const pages = useState<number[]>([]);
 
   const generatePagination = useCallback(() => {
     for (let i = 0; i < nPages; i++) {
-      pages.push(i + 1);
+      pages[0].push(i + 1);
     }
-  }, [nPages]);
+  }, [nPages, pages]);
 
   useEffect(() => {
     generatePagination();
-    console.log(pages);
-  }, [nPages, pages]);
-
-  const history = useHistory();
+  }, [nPages, pages, generatePagination]);
 
   return (
     <>
       <Pagination>
-        {pages.map(page => {
+        {pages[0].map(page => {
           return (
             <li key={page}>
               <a href={`/customers/?page=${page}`}>{page}</a>

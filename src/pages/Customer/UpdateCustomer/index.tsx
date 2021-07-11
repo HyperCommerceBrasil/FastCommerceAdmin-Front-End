@@ -3,7 +3,7 @@ import { useEffect, useCallback } from 'react';
 import { error, success } from '@pnotify/core';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { FaArrowLeft, FaCheckCircle, FaMapMarkedAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 import api from '../../../services/api';
 import Layout from '../../layout';
 
@@ -26,40 +26,37 @@ const ListCustomer: React.FC = () => {
   const [customer, setCustomer] = useState<Customer>({} as Customer);
   const [showModal, setShowModal] = useState(false);
 
-  const [loadForm, setLoadForm] = useState(false);
-
   const { idCustomer } = useParams<{ idCustomer: string }>();
 
   useEffect(() => {
     async function getCustomer() {
       try {
-        setLoadForm(true);
         const response = await api.get<Customer>(
           `/admin/customers/${idCustomer}`,
         );
 
         setCustomer(response.data);
-        setLoadForm(false);
       } catch (err) {
-        setLoadForm(false);
-
         alert(err.response.data.message);
       }
     }
 
     getCustomer();
-  }, []);
-  const handleUpdate = useCallback(async data => {
-    try {
-      const response = await api.put(`/admin/customers/${idCustomer}`, data);
+  }, [idCustomer]);
+  const handleUpdate = useCallback(
+    async data => {
+      try {
+        const response = await api.put(`/admin/customers/${idCustomer}`, data);
 
-      if (response.data) {
-        success('Registro Atualizado com sucesso');
+        if (response.data) {
+          success('Registro Atualizado com sucesso');
+        }
+      } catch (err) {
+        if (err) error(err.response.data.message);
       }
-    } catch (err) {
-      if (err) error(err.response.data.message);
-    }
-  }, []);
+    },
+    [idCustomer],
+  );
 
   const history = useHistory();
 

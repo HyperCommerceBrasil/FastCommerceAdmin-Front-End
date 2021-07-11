@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { FaAlignLeft, FaBackward } from 'react-icons/fa';
-import { useHistory } from 'react-router-dom';
+import { FaAlignLeft } from 'react-icons/fa';
 import { useAuth } from '../../hooks/AuthContext';
 import logo from '../../assets/logo.png';
 
@@ -23,7 +22,6 @@ const Layout: React.FC = ({ children }) => {
 
   const { signOut } = useAuth();
 
-  const history = useHistory();
   return (
     <Container>
       <header>

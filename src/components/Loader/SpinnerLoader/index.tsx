@@ -1,6 +1,5 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
-import { createContext } from 'react';
 import { Backdrop } from '@material-ui/core';
 
 interface LoadProps {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { LinearProgress } from '@material-ui/core';
-import { createContext } from 'react';
 
 interface LoadProps {
   show: boolean;

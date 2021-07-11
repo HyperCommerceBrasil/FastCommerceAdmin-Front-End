@@ -1,5 +1,4 @@
 import React, { HTMLAttributes } from 'react';
-import { FaDollarSign } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
 import { CardContainer, ContentCard, Title, Subtitle } from './styles';

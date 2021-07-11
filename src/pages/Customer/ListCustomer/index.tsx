@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useEffect, useCallback } from 'react';
 import { error, success } from '@pnotify/core';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 import api from '../../../services/api';
 import Layout from '../../layout';
 import Modal from '../../../components/Modal';
@@ -14,7 +14,6 @@ import FormCustomer from '../FormCustomer';
 
 import { Content, Title, ButtonsHeader, Container } from './styles';
 import Button from '../../../components/Button';
-import Loader from '../../../components/Loader/LinearLoader';
 import CircularLoader from '../../../components/Loader/SpinnerLoader';
 
 interface Customer {
@@ -33,33 +32,28 @@ const ListCustomer: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [numPages, setNumPages] = useState(0);
-  const [pages, setPages] = useState<number[]>([]);
-  const [loadTable, setLoadTable] = useState(false);
   const [loadForm, setLoadForm] = useState(false);
 
-  const handleSaveCustomer = useCallback(
-    async data => {
-      try {
-        setLoadForm(true);
-        const response = await api.post('/customers', data);
+  const handleSaveCustomer = useCallback(async data => {
+    try {
+      setLoadForm(true);
+      const response = await api.post('/customers', data);
 
-        if (response.data) {
-          success('Cliente cadastrado com sucesso');
-          setShowModal(false);
-        }
-
-        window.location.reload();
-
-        setLoadForm(false);
-      } catch (err) {
-        if (err) {
-          error(err.response.data.message);
-        }
-        setLoadForm(false);
+      if (response.data) {
+        success('Cliente cadastrado com sucesso');
+        setShowModal(false);
       }
-    },
-    [customers],
-  );
+
+      window.location.reload();
+
+      setLoadForm(false);
+    } catch (err) {
+      if (err) {
+        error(err.response.data.message);
+      }
+      setLoadForm(false);
+    }
+  }, []);
 
   const { search } = useLocation();
 
@@ -69,23 +63,19 @@ const ListCustomer: React.FC = () => {
   useEffect(() => {
     async function getCustomers() {
       try {
-        setLoadTable(true);
         const customers = await api.get<IResponse>(
           `/admin/customers?page=${pageLink}`,
         );
 
         setCustomers(customers.data.customers);
         setNumPages(customers.data.totalPages);
-        setLoadTable(false);
       } catch (err) {
-        setLoadTable(false);
-
         alert(err.response.data.message);
       }
     }
 
     getCustomers();
-  }, []);
+  }, [pageLink]);
 
   const history = useHistory();
 

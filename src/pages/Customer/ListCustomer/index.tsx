@@ -75,7 +75,7 @@ const ListCustomer: React.FC = () => {
     }
 
     getCustomers();
-  }, [pageLink]);
+  }, [pageLink, numPages]);
 
   const history = useHistory();
 

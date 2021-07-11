@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect, useCallback } from 'react';
-import { success } from '@pnotify/core';
+import { success, error } from '@pnotify/core';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
@@ -50,7 +50,7 @@ const ListCustomer: React.FC = () => {
           success('Registro Atualizado com sucesso');
         }
       } catch (err) {
-        // if (err) error(err.response.data.message);
+        if (err) error(err.response.data.message);
       }
     },
     [idCustomer],

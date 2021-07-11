@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect, useCallback } from 'react';
-import { success } from '@pnotify/core';
+import { error, success } from '@pnotify/core';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { FaArrowLeft } from 'react-icons/fa';
@@ -70,7 +70,7 @@ const ListCustomer: React.FC = () => {
         setCustomers(customers.data.customers);
         setNumPages(customers.data.totalPages);
       } catch (err) {
-        alert('deu um erro');
+        alert(err.response.data.message);
       }
     }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect, useCallback } from 'react';
-import { error, success } from '@pnotify/core';
+import { success } from '@pnotify/core';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { FaArrowLeft } from 'react-icons/fa';

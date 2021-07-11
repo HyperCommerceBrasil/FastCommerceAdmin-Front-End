@@ -36,9 +36,7 @@ const ListCustomer: React.FC = () => {
         );
 
         setCustomer(response.data);
-      } catch (err) {
-        // alert(err.response.data.message);
-      }
+      } catch (err) {}
     }
 
     getCustomer();

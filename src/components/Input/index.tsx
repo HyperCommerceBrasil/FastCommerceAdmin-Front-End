@@ -13,6 +13,7 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   errors?: any;
   disabled?: string;
   cursor?: string;
+  value?: string;
 }
 
 const Input: React.FC<InputProps> = ({

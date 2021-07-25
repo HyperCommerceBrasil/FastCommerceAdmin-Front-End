@@ -14,19 +14,54 @@ import { Content, Container, SectionAddress, ListAddresses } from './style';
 import Card from '../../../components/Card';
 import Button from '../../../components/Button';
 import ModalCustom from '../../../components/Modal';
+import { resolveResponse } from '../../../utils/resolverResponse';
+
+interface Address {
+  id: string;
+  name: string;
+  cep: string;
+  uf: string;
+  city: string;
+  street: string;
+  district: string;
+  number: string;
+  addressDefault: boolean;
+}
 
 interface Customer {
   id: string;
   name: string;
   email: string;
   cpf: string;
+  adresses: Address[];
 }
 
 const ListCustomer: React.FC = () => {
   const [customer, setCustomer] = useState<Customer>({} as Customer);
   const [showModal, setShowModal] = useState(false);
+  const [address, setAddress] = useState<Address>({} as Address);
 
   const { idCustomer } = useParams<{ idCustomer: string }>();
+
+  const sortAdresses = useCallback((adresses: Address[]) => {
+    let sortedAdress: Address[] = [];
+
+    if (adresses) {
+      sortedAdress = adresses.sort(function (addresSortA, addresSortB) {
+        if (addresSortA.id > addresSortB.id) {
+          return 1;
+        }
+
+        if (addresSortA.id < addresSortB.id) {
+          return -1;
+        }
+
+        return 0;
+      });
+    }
+
+    return sortedAdress;
+  }, []);
 
   useEffect(() => {
     async function getCustomer() {
@@ -36,11 +71,54 @@ const ListCustomer: React.FC = () => {
         );
 
         setCustomer(response.data);
+        setCustomer({
+          ...customer,
+          adresses: sortAdresses(response.data.adresses),
+        });
       } catch (err) {}
     }
 
     getCustomer();
-  }, [idCustomer]);
+    // eslint-disable-next-line
+  }, [idCustomer, sortAdresses]);
+
+  const setAdressDefault = useCallback(
+    async address => {
+      try {
+        await api.put(`/admin/customers/address/${address}`, {
+          defaultAddress: true,
+        });
+
+        const response = await api.get<Customer>(
+          `/admin/customers/${idCustomer}`,
+        );
+        setCustomer(response.data);
+        setCustomer({
+          ...customer,
+          adresses: sortAdresses(response.data.adresses),
+        });
+
+        success('Endereço padrão alterado com sucesso');
+      } catch (err) {
+        if (err) {
+          console.log(JSON.stringify(err));
+        }
+      }
+    },
+    [idCustomer, customer, sortAdresses],
+  );
+
+  const getDataAddress = useCallback(async addressID => {
+    try {
+      const response = await api.get<Address>(
+        `admin/customers/address/${addressID}`,
+      );
+      setAddress(response.data);
+    } catch {
+      error('Ocorreu um erro ao buscar os dados do endereço');
+    }
+  }, []);
+
   const handleUpdate = useCallback(
     async data => {
       try {
@@ -56,7 +134,58 @@ const ListCustomer: React.FC = () => {
     [idCustomer],
   );
 
+  const handleUpdateAddress = useCallback(
+    async (data: Address) => {
+      try {
+        const response = await api.put(
+          `admin/customers/address/${address.id}`,
+          data,
+        );
+
+        success('Registro Atualizado com sucesso');
+        setShowModal(!showModal);
+        const adressesCustomer = customer.adresses.map(addr => {
+          if (addr.id === response.data.id) {
+            return response.data;
+          }
+          return addr;
+        });
+
+        setCustomer({ ...customer, adresses: adressesCustomer });
+      } catch {}
+    },
+    [address, customer, showModal],
+  );
+
   const history = useHistory();
+
+  const handleDeleteAddress = useCallback(
+    async idAddr => {
+      try {
+        await api.delete(`/admin/customers/address/${idAddr}`);
+        const response = await api.get<Customer>(
+          `/admin/customers/${idCustomer}`,
+        );
+
+        setCustomer(response.data);
+        setCustomer({
+          ...customer,
+          adresses: sortAdresses(response.data.adresses),
+        });
+
+        success('Registro Deletado com sucesso');
+      } catch (err) {
+        if (err) {
+          const message = resolveResponse(err);
+          error({
+            title: 'Erro ao deletar registro',
+            text: message,
+          });
+        }
+      }
+    },
+    [idCustomer, sortAdresses, customer],
+  );
 
   return (
     <>
@@ -66,8 +195,9 @@ const ListCustomer: React.FC = () => {
           title="Editar Endereço"
           closeModal={setShowModal}
         >
-          <FormAddress functionAction={handleUpdate} />
+          <FormAddress functionAction={handleUpdateAddress} address={address} />
         </ModalCustom>
+
         <Container>
           <header>
             <FaArrowLeft
@@ -89,54 +219,63 @@ const ListCustomer: React.FC = () => {
 
             <SectionAddress>
               <h1>Endereços </h1>
-              <span style={{ color: 'red' }}>
-                Em desenvolvimento, os dados abaixo são fictícios
-              </span>
 
               <ListAddresses>
-                <Card
-                  color="white"
-                  title="Endereço Casa"
-                  style={{
-                    maxWidth: '400px',
-                  }}
-                >
-                  <span>Rua Ernesto Alves 1431</span>
-                  <span> Monsenhor Wolski São Luiz Gonzaga, RS</span>
-                  <span>97800000 Brasil Telefone: ‪55996628613‬</span>
+                {customer.adresses?.map(address => (
+                  <Card
+                    Icon={address.addressDefault ? FaCheckCircle : undefined}
+                    iconColor="green"
+                    color="white"
+                    title={address.name}
+                    key={address.id}
+                    style={{
+                      maxWidth: '400px',
+                      borderColor: address.addressDefault ? 'green' : 'silver',
+                      border: address.addressDefault
+                        ? 'solid 3px green'
+                        : 'solid 1px',
+                    }}
+                  >
+                    <span>
+                      {address.street} - {address.number}
+                    </span>
+                    <span>
+                      {address.district} {address.city}, {address.uf}
+                    </span>
+                    <span>{address.cep} Brasil</span>
 
-                  <div>
-                    <Button
-                      colorTheme="secondary"
-                      onClick={() => {
-                        setShowModal(!showModal);
-                      }}
-                    >
-                      Editar
-                    </Button>
-                    <Button colorTheme="primary">Tornar Padrão</Button>
-                    <Button colorTheme="danger">Excluir</Button>
-                  </div>
-                </Card>
-                <Card
-                  color="white"
-                  title="Endereço Casa"
-                  style={{
-                    maxWidth: '400px',
-                    borderColor: '2px green solid',
-                  }}
-                  Icon={FaCheckCircle}
-                  iconColor="green"
-                >
-                  <span>Rua Ernesto Alves 1431</span>
-                  <span> Monsenhor Wolski São Luiz Gonzaga, RS</span>
-                  <span>97800000 Brasil Telefone: ‪55996628613‬</span>
-
-                  <div>
-                    <Button colorTheme="secondary">Editar</Button>
-                    <Button colorTheme="danger">Excluir</Button>
-                  </div>
-                </Card>
+                    <div>
+                      <Button
+                        colorTheme="secondary"
+                        onClick={() => {
+                          getDataAddress(address.id);
+                          setShowModal(!showModal);
+                        }}
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        colorTheme="primary"
+                        style={{
+                          display: address.addressDefault ? 'none' : 'inline',
+                        }}
+                        onClick={() => {
+                          setAdressDefault(address.id);
+                        }}
+                      >
+                        Tornar Padrão
+                      </Button>
+                      <Button
+                        colorTheme="danger"
+                        onClick={() => {
+                          handleDeleteAddress(address.id);
+                        }}
+                      >
+                        Excluir
+                      </Button>
+                    </div>
+                  </Card>
+                ))}
               </ListAddresses>
             </SectionAddress>
           </Content>

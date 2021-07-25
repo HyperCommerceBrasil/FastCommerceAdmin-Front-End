@@ -1,48 +1,55 @@
 import React, { HTMLAttributes } from 'react';
 import { Form, Formik } from 'formik';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 
 import { FormCustom } from './styles';
 
-interface Customer {
+interface Address {
   id: string;
   name: string;
-  email: string;
-  cpf: string;
+  cep: string;
+  uf: string;
+  city: string;
+  street: string;
+  district: string;
+  number: string;
+  addressDefault: boolean;
 }
 
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
   functionAction: any;
+  address: Address;
 }
 
-const FormAddress: React.FC<FormProps> = ({ functionAction, ...rest }) => {
-  const schema = Yup.object().shape({
-    password: Yup.string()
-      .required('Informe a senha!')
-      .min(8, 'A senha deve conter mais de 8 letras!'),
-    email: Yup.string()
-      .required('Informe o email!')
-      .email('Informe um email válido!'),
-    name: Yup.string().required('Informe um nome de usuario!'),
-  });
-
+const FormAddress: React.FC<FormProps> = ({
+  functionAction,
+  address,
+  ...rest
+}) => {
   return (
     <>
       <FormCustom>
         <Formik
-          initialValues={{ name: '', email: '', password: '' }}
+          initialValues={{
+            cep: address.cep,
+            name: address.name,
+            city: address.city,
+            district: address.district,
+            street: address.street,
+            number: address.number,
+          }}
+          enableReinitialize
           onSubmit={functionAction}
-          validationSchema={schema}
         >
           <Form>
             <Input name="name" label="Nome do Endereço" />
             <Input name="cep" label="CEP" />
-            <Input name="city" type="text" label="Cidade" />
-            <Input name="neighborbood" label="Bairro" />
+            <Input name="city" label="Cidade" />
+            <Input name="district" label="Bairro" />
             <Input name="street" label="Rua" />
-            <Input name="number" type="text" label="Número" />
+            <Input name="number" label="Número" />
             <Button colorTheme="primary">Salvar</Button>
           </Form>
         </Formik>

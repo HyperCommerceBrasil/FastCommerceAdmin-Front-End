@@ -4,9 +4,10 @@ import { ButtonCustom } from './styles';
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   colorTheme: 'primary' | 'danger' | 'secondary' | undefined;
+  type?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ children, type, ...rest }) => {
   return (
     <>
       <ButtonCustom {...rest}>{children}</ButtonCustom>

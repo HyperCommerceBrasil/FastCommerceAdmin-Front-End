@@ -5,7 +5,6 @@ import { format } from 'date-fns';
 
 // import { FaBoxes, FaDollarSign } from 'react-icons/fa';
 
-
 import { success, error } from '@pnotify/core';
 import {
   Backdrop,
@@ -73,7 +72,6 @@ const Collection: React.FC = () => {
         setLoad(false);
       } catch {
         setLoad(false);
-        
       }
     }
 
@@ -95,141 +93,138 @@ const Collection: React.FC = () => {
     [collections],
   );
 
-
-
   return (
     <>
-    <Layout>
- <Backdrop
-        open={loader}
-        style={{
-          position: 'absolute',
-          zIndex: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          color: 'white',
-        }}
-      >
-        <CircularProgress color="inherit" />
-        <span color="white">Processando aguarde </span>
-      </Backdrop>
-      <Container>
-        <ModalCustom
-          show={openModal}
-          title="Adicionar nova coleção"
-          widthPercent="500px"
+      <Layout>
+        <Backdrop
+          open={loader}
+          style={{
+            position: 'absolute',
+            zIndex: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            color: 'white',
+          }}
         >
-          <ContentModal>
-            <InputControl>
-              <label htmlFor="collectioName">Nome da Coleção</label>
-              <OutlinedInput
-                id="collectionName1"
-                value={collectionName}
-                onChange={evt => {
-                  setCollectionName(evt.target.value);
+          <CircularProgress color="inherit" />
+          <span color="white">Processando aguarde </span>
+        </Backdrop>
+        <Container>
+          <ModalCustom
+            show={openModal}
+            title="Adicionar nova coleção"
+            widthPercent="500px"
+          >
+            <ContentModal>
+              <InputControl>
+                <label htmlFor="collectioName">Nome da Coleção</label>
+                <OutlinedInput
+                  id="collectionName1"
+                  value={collectionName}
+                  onChange={evt => {
+                    setCollectionName(evt.target.value);
+                  }}
+                />
+              </InputControl>
+            </ContentModal>
+            <FooterModal>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={HandleCreateCollection}
+                style={{ background: '#34A3D7', color: 'white' }}
+              >
+                SALVAR
+              </Button>
+              <Button
+                type="button"
+                variant="contained"
+                style={{ background: '#7D1321', color: 'white' }}
+                onClick={() => {
+                  setOpenModal(!openModal);
                 }}
-              />
-            </InputControl>
-          </ContentModal>
-          <FooterModal>
-            <Button
-              type="button"
-              variant="contained"
-              onClick={HandleCreateCollection}
-              style={{ background: '#34A3D7', color: 'white' }}
-            >
-              SALVAR
-            </Button>
-            <Button
-              type="button"
-              variant="contained"
-              style={{ background: '#7D1321', color: 'white' }}
-              onClick={() => {
-                setOpenModal(!openModal);
-              }}
-            >
-              CANCELAR
-            </Button>
-          </FooterModal>
-        </ModalCustom>
+              >
+                CANCELAR
+              </Button>
+            </FooterModal>
+          </ModalCustom>
 
-        <header>
-          <h1>Coleções</h1>
-          <Options>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setOpenModal(!openModal);
-              }}
-            >
-              Nova Coleção
-            </Button>
-          </Options>
-        </header>
+          <header>
+            <h1>Coleções</h1>
+            <Options>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setOpenModal(!openModal);
+                }}
+              >
+                Nova Coleção
+              </Button>
+            </Options>
+          </header>
 
-        <CardCustom>
-          {load ? <LinearProgress color="primary" /> : ''}
+          <CardCustom>
+            {load ? <LinearProgress color="primary" /> : ''}
 
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Nome</TableCell>
-                  <TableCell>Data de Crição</TableCell>
-                  <TableCell align="left">Data de Modificação</TableCell>
-                  <TableCell align="left" />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {collections.map(collect => (
+            <TableContainer>
+              <Table>
+                <TableHead>
                   <TableRow>
-                    <TableCell
-                      style={{ maxWidth: '200px', overflow: 'hidden' }}
-                    >
-                      {collect.name}
-                    </TableCell>
-                    <TableCell>
-                      {format(new Date(collect.created_at), 'dd/MM/yyyy')}
-                    </TableCell>
-                    <TableCell align="left">
-                      {' '}
-                      {format(new Date(collect.updated_at), 'dd/MM/yyyy')}
-                    </TableCell>
-                    <TableCell align="left">
-                      <Button
-                        type="button"
-                        variant="contained"
-                        color="secondary"
-                        onClick={async () => {
-                          if (
-                            window.confirm(
-                              'Você tem certeza que quer excluir este registro',
-                            )
-                          ) {
-                            setLoader(true);
-                            await handleDeleteCollection(collect.id);
-                            setLoader(false);
-                            success({
-                              text: 'Registro deletado com sucesso !',
-                              closerHover: true,
-                            });
-                          }
-                        }}
-                        style={{ background: 'red', width: '150px' }}
-                      >
-                        Excluir
-                      </Button>
-                    </TableCell>
+                    <TableCell>Nome</TableCell>
+                    <TableCell>Data de Crição</TableCell>
+                    <TableCell align="left">Data de Modificação</TableCell>
+                    <TableCell align="left" />
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardCustom>
-      </Container>
-    </Layout>
-     
+                </TableHead>
+                <TableBody>
+                  {collections.map(collect => (
+                    <TableRow>
+                      <TableCell
+                        style={{ maxWidth: '200px', overflow: 'hidden' }}
+                      >
+                        {collect.name}
+                      </TableCell>
+                      <TableCell>
+                        {format(new Date(collect.created_at), 'dd/MM/yyyy')}
+                      </TableCell>
+                      <TableCell align="left">
+                        {' '}
+                        {format(new Date(collect.updated_at), 'dd/MM/yyyy')}
+                      </TableCell>
+                      <TableCell align="left">
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="secondary"
+                          onClick={async () => {
+                            if (
+                              window.confirm(
+                                'Você tem certeza que quer excluir este registro',
+                              )
+                            ) {
+                              setLoader(true);
+                              await handleDeleteCollection(collect.id);
+                              setLoader(false);
+                              success({
+                                text: 'Registro deletado com sucesso !',
+                                closerHover: true,
+                              });
+                            }
+                          }}
+                          style={{ background: 'red', width: '150px' }}
+                        >
+                          Excluir
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </CardCustom>
+        </Container>
+      </Layout>
     </>
   );
 };

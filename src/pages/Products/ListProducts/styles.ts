@@ -17,6 +17,33 @@ export const Container = styled.div`
   }
 `;
 
+export const SearchingSection = styled.fieldset`
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  background: #ffffff;
+  border: silver 1px solid;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 30px;
+`;
+
+export const FormContainer = styled.div`
+  display: flex;
+  width: 100%;
+
+  form {
+    display: flex;
+    flex-direction: row;
+  }
+
+  button {
+    margin: 0 auto;
+    margin: 12px;
+    width: 100px;
+  }
+`;
+
 export const Content = styled.div`
   display: flex;
   flex-direction: row;

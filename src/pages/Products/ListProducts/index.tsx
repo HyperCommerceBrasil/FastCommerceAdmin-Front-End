@@ -2,10 +2,23 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import { error } from '@pnotify/core';
+
+import { Form, Formik } from 'formik';
 import api from '../../../services/api';
 
-import { Container, Content, CardCustom, CardFooter } from './styles';
+import {
+  Container,
+  Content,
+  CardCustom,
+  CardFooter,
+  FormContainer,
+  SearchingSection,
+} from './styles';
 import Layout from '../../layout';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import { resolveResponse } from '../../../utils/resolverResponse';
+import LoaderData from '../../../components/Loader/SpinnerLoader';
 
 interface Product {
   id: string;
@@ -22,6 +35,7 @@ interface Product {
 const ListProducts: React.FC = () => {
   const history = useHistory();
   const [products, setProducts] = useState<Product[]>([]);
+  const [loader, setLoader] = useState(false);
 
   const handleDeleteProduct = useCallback(
     async idProduct => {
@@ -36,6 +50,25 @@ const ListProducts: React.FC = () => {
     },
     [products],
   );
+
+  const handleSearchProduct = useCallback(async data => {
+    try {
+      setLoader(true);
+
+      const response = await api.get(`products/search/?search=${data.search}`);
+
+      setProducts(response.data);
+      setLoader(false);
+    } catch (err) {
+      setLoader(false);
+
+      const msg = resolveResponse(err.response);
+      error({
+        title: 'Ocorreu um erro',
+        text: msg,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     async function getProducts(): Promise<void> {
@@ -65,7 +98,29 @@ const ListProducts: React.FC = () => {
               NOVO PRODUTO
             </button>
           </header>
-
+          <SearchingSection name="Ações">
+            <legend>Pesquisa</legend>
+            <Formik
+              initialValues={{
+                search: '',
+              }}
+              onSubmit={handleSearchProduct}
+            >
+              <FormContainer>
+                <Form>
+                  <Input
+                    label=""
+                    name="search"
+                    placeholder="Pesquisa por nome, preço etc ..."
+                  />
+                  <Button type="button" colorTheme="primary">
+                    Pesquisar
+                  </Button>
+                </Form>
+              </FormContainer>
+            </Formik>
+          </SearchingSection>
+          <LoaderData show={loader} />
           <Content>
             {products.map(product => (
               <CardCustom>

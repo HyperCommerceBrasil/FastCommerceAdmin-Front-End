@@ -7,7 +7,7 @@ import { ContentInput, Container, MessageError } from './style';
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
   Icon?: IconType;
-  label: string;
+  label?: string;
   name: string;
   type?: string;
   errors?: any;

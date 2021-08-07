@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+interface ContentProps {
+  show: boolean;
+}
+
+export const ContentMenu = styled.div``;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,11 +24,11 @@ export const Container = styled.div`
   }
 `;
 
-export const Content = styled.div`
+export const Content = styled.div<ContentProps>`
   width: 100%;
   padding: 16px;
   background: white;
-  display: flex;
+  display: ${props => (props.show ? 'flex' : 'none')};
   flex: 1;
   flex-direction: row;
 
@@ -36,36 +42,32 @@ export const ContentDropZone = styled.div`
   margin: 16px;
   padding: 8px;
   width: 350px;
+  height: 350px;
   transition: 0.7 ease-in-out;
   div {
     margin: auto;
-   
   }
 
   &:hover {
-    border: #1698D3 solid 1px;
+    border: #1698d3 solid 1px;
     border-radius: 5px;
   }
-  
+
   max-height: 400px;
   min-width: 320px;
   border-style: dotted;
 
-
   img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 280px;
+    max-height: 280px;
   }
   display: flex;
 
-  p{
+  p {
     text-align: center;
     margin: auto;
   }
 `;
-
-
-
 
 export const ContentForm = styled.div`
   display: flex;
@@ -75,7 +77,6 @@ export const ContentForm = styled.div`
     margin: 8px 0;
     width: 100%;
   }
-
 `;
 
 export const FormGroup = styled.div`

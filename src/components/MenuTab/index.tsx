@@ -19,6 +19,7 @@ const MenuTab: React.FC<PropsTabMenu> = ({ setIndice, indice, tabs }) => {
       <ul>
         {tabs.map(tab => (
           <MenuItem
+          key={tab.name}
             active={indice === tab.value}
             onClick={() => {
               setIndice(tab.value);

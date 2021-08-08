@@ -21,10 +21,7 @@ export const Container = styled.div`
     padding-top: 20px;
     padding-bottom: 20px;
 
-    button {
-      background: transparent;
-      border: transparent;
-    }
+    
   }
   svg {
     color: #34a3d7;

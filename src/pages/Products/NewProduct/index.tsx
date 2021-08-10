@@ -11,6 +11,7 @@ import api from '../../../services/api';
 import Layout from '../../layout';
 import { resolveResponse } from '../../../utils/resolverResponse';
 import FormProduct from '../FormProduct';
+import Loader from './../../../components/Loader/SpinnerLoader';
 
 interface Product {
   id?: string;
@@ -24,16 +25,18 @@ interface Product {
   trending: boolean;
 }
 const NewProduct: React.FC = () => {
-  const [editorContent] = useState('');
+
+  const [statusLoad, setStatusLoad] = useState(false); 
 
   const history = useHistory();
 
 
   const handleSaveProduct = useCallback(
     async (data: Product, productImages: string[]) => {
-      data.details = editorContent;
+
 
       try {
+        setStatusLoad(true);
         const response = await api.post<Product>('/products', data);
 
         const dataFile1 = new FormData();
@@ -73,8 +76,10 @@ const NewProduct: React.FC = () => {
           }
 
           success('Registro Salvo com sucesso');
+          setStatusLoad(false);
           // history.push('/products');
         } catch (err) {
+          setStatusLoad(false);
           const msg = resolveResponse(err);
 
           error({
@@ -95,6 +100,7 @@ const NewProduct: React.FC = () => {
   return (
     <>
       <Layout>
+        <Loader show={statusLoad}></Loader>
         <Container>
           <header>
             <FaArrowLeft

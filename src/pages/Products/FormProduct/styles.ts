@@ -24,13 +24,39 @@ export const Container = styled.div`
   }
 `;
 
+
+export const ButtonImageDelete = styled.div`
+  height: 40px;
+  width: 150px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 1px 1px;
+  color: white;
+  text-transform: uppercase;
+  position: absolute;
+
+  cursor: pointer;
+  background-color: #ce0303;
+  opacity: 0.8;
+  padding: 8px;
+  margin-top: 100px;
+ 
+  border: 1px silver solid;
+
+  svg {
+    color: white;
+    margin-left: 16px;
+  }
+`;
+
 export const Content = styled.div<ContentProps>`
   width: 100%;
   padding: 16px;
   background: white;
   display: ${props => (props.show ? 'flex' : 'none')};
   flex: 1;
-  flex-direction: row;
+  flex-direction: column;
+
+
 
   form {
     width: 100%;
@@ -73,9 +99,12 @@ export const ContentForm = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  
   div {
 
     width: 100%;
+    
   }
 `;
 

@@ -9,12 +9,15 @@ import api from '../../../services/api';
 import Layout from '../../layout';
 import FormProduct from '../FormProduct';
 
+import Loader from './../../../components/Loader/SpinnerLoader';
+
 interface Collection {
   id: string;
   name: string;
 }
 
 interface Image {
+  id: string;
   key: string;
   image: string;
 }
@@ -38,6 +41,7 @@ const NewProduct: React.FC = () => {
   const [product, setProduct] = useState<Product>({} as Product);
   const history = useHistory();
   const { idProduct } = useParams<{ idProduct: string }>();
+  const [statusLoad, setStatusLoad] = useState(false); 
 
   useEffect(() => {
     async function getProduct() {
@@ -58,24 +62,67 @@ const NewProduct: React.FC = () => {
 
   const handleUpdate = useCallback(
     async (data, images: string[]) => {
+      setStatusLoad(true);
+      const dataFile = new FormData();
       try {
         const response = await api.put<Product>(`/products/${idProduct}`, data);
-   
-
-        const dataFile = new FormData();
+        console.log("teste 4 img")
+        console.log(data);
+       
 
         dataFile.append('productId', response.data.id || '');
-        images.map(async image => {
-          if (image) {
-            dataFile.append('productImage', image || '');
-            await api.post('products/upload/image', dataFile);
-            dataFile.delete('productImage');
-          }
-        });
+ 
+    
+          const dataFile1 = new FormData();
+          const dataFile2 = new FormData();
+  
+          const dataFile3 = new FormData();
+  
+          const dataFile4 = new FormData();
 
+          
+         
+          dataFile1.append('productImage', images[0] || '');
+          dataFile1.append('productId', response.data.id || '');
+
+          if (images[0]) {
+            await api.post('products/upload/image', dataFile1);
+          }
+
+          dataFile2.append('productImage',  images[1] || '');
+          dataFile2.append('productId', response.data.id || '');
+
+          if (images[1]) {
+            await api.post('products/upload/image', dataFile2);
+          }
+
+          dataFile3.append('productImage',  images[2] || '');
+          dataFile3.append('productId', response.data.id || '');
+
+          if (images[2]) {
+            await api.post('products/upload/image', dataFile3);
+          }
+
+          dataFile4.append('productImage',  images[3] || '');
+          dataFile4.append('productId', response.data.id || '');
+
+          if (images[3]) {
+            await api.post('products/upload/image', dataFile4);
+          }
+
+       
         success('Registro Atualizado com sucesso');
+        setStatusLoad(false);
+        const responseProduct = await api.get<Product>(
+          `/products/listone/${idProduct}`,
+        );
+        setProduct(responseProduct.data);
+     
       } catch (err) {
+        setStatusLoad(false);
+        dataFile.delete('productImage');
         error('Ocorreu um erro ao salvar o produto verifique o console');
+        
         console.log(err);
       }
     },
@@ -86,6 +133,7 @@ const NewProduct: React.FC = () => {
   return (
     <>
       <Layout>
+      <Loader show={statusLoad}></Loader>
         <Container>
           <header>
             <FaArrowLeft

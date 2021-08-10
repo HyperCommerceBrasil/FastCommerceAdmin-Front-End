@@ -7,7 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import * as Yup from 'yup';
 import Checkbox from './../../../components/Checkbox';
 
-import { error } from '@pnotify/core';
+import { error, success } from '@pnotify/core';
 import { Form, Formik } from 'formik';
 import {
   Container,
@@ -15,12 +15,16 @@ import {
   ContentForm,
   ContentDropZone,
   ContentMenu,
+  ButtonImageDelete,
 } from './styles';
 import api from '../../../services/api';
 
 import MenuTab from '../../../components/MenuTab';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
+import { resolve } from 'eslint-import-resolver-typescript/lib';
+import { resolveResponse } from '../../../utils/resolverResponse';
+import { FaTrash } from 'react-icons/fa';
 
 interface Collection {
   id: string;
@@ -28,6 +32,7 @@ interface Collection {
 }
 
 interface Image {
+  id: string;
   image: string;
   key: string;
 }
@@ -88,17 +93,41 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
     }
 
     getCollection();
-  
-    if (product && product.name) {
-    
-        setImageProduct1(product.images[0].image);
-        setImageProduct2(product.images[1].image);
-        setImageProduct3(product.images[2].image);
-        setImageProduct4(product.images[3].image);
-        setEditorContent(product.details);
 
+    if (product && product.name) {
+      setImageProduct1(product.images[0]?.image || '');
+      setImageProduct2(product.images[1]?.image || '');
+      setImageProduct3(product.images[2]?.image || '');
+      setImageProduct4(product.images[3]?.image || '');
+      setEditorContent(product.details);
     }
   }, [product]);
+
+  const deleteImage = useCallback(async (imageId, imageRef) => {
+    try {
+      await api.delete(`/products/image/delete/${imageId}`);
+    
+
+      if (imageRef === 'image-1') {
+        setImageProduct1('')
+      }
+      if (imageRef === 'image-2') {
+        setImageProduct2('')
+      }
+      if (imageRef === 'image-3') {
+        setImageProduct3('')
+      }
+      if (imageRef === 'image-4') {
+        setImageProduct4('')
+      }
+ 
+    } catch (err) {
+      const msg = resolveResponse(err.reponse);
+      if (err) {
+        success(msg);
+      }
+    }
+  }, []);
 
   const onDrop1 = useCallback(
     acceptedFiles => {
@@ -167,20 +196,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   const dropzone1 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop1,
+    disabled: !!!!imageProduct1
   });
   const dropzone2 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop2,
+    disabled: !!!!imageProduct2
   });
 
   const dropzone3 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop3,
+    disabled: !!!!imageProduct3
   });
 
   const dropzone4 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop4,
+    disabled: !!!!imageProduct4
   });
 
   const schemaValidData = Yup.object({
@@ -214,8 +247,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
         />
 
         <ContentMenu>
-          <Content show={indiceMenu === 1}>
-            <Formik
+        <Formik
               initialValues={{
                 name: product?.name || '',
                 trending: product?.trending || false,
@@ -227,7 +259,6 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                 details: product?.details || '',
                 quantity: product?.quantity || '',
                 collectionId: product?.collection?.id || '',
-                
               }}
               validateOnBlur={false}
               validateOnChange={false}
@@ -238,8 +269,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                   !imageProduct1 ||
                   !imageProduct2 ||
                   !imageProduct3 ||
-                  !imageProduct4  
-              
+                  !imageProduct4
                 ) {
                   error({
                     title: 'Erro ao gravar',
@@ -247,6 +277,8 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                   });
                   setIndiceMenu(2);
                 } else {
+                  data.details = editorContent;
+                  console.log(data);
                   functionAction(data, [
                     fileImageProduct1,
                     fileImageProduct2,
@@ -271,6 +303,8 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                   Salvar
                 </Button>
 
+          <Content show={indiceMenu === 1}>
+           
                 <ContentForm>
                   <div
                     style={{
@@ -283,6 +317,10 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                       id="name"
                       placeholder="Nome do Produto"
                       label="Nome do Produto"
+                      style={{
+                        margin: ' 0 10px'
+                      }}
+
                     />
 
                     {/* <span style={{ margin: 'auto' }}>
@@ -304,22 +342,36 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     name="ean"
                     placeholder="Codigo de Barras"
                     label="Código de Barras"
+                    style={{
+                      margin: ' 0 10px'
+                    }}
                   />
-                  <Input name="price" placeholder="Preço" label="Preço" />
+                  <Input name="price" placeholder="Preço" label="Preço"  style={{
+                        margin: ' 0 10px'
+                      }} />
                   <Input
                     name="price_promotional"
                     placeholder="Preço promocional"
                     label="Preço promocional"
+                    style={{
+                      margin: ' 0 10px'
+                    }}
                   />
                   <Input
                     name="description"
                     placeholder="Descrição"
                     label="Descrição"
+                    style={{
+                      margin: ' 0 10px'
+                    }}
                   />
                   <Input
                     name="quantity"
                     placeholder="Quantidade"
                     label="Quantidade"
+                    style={{
+                      margin: '10px'
+                    }}
                   />
 
                   <InputLabel htmlFor="filled-age-native-simple">
@@ -331,7 +383,6 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     label="Coleção"
                     placeholder="Coleção"
                   >
-
                     {collections.map(collect => {
                       return (
                         <option key={collect.id} value={collect.id}>
@@ -364,11 +415,13 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     fullscreen_native: true,
                     image_advtab: true,
                     importcss_append: true,
+                    
                   }}
                 />
-              </Form>
-            </Formik>
+              
           </Content>
+          </Form>
+            </Formik>
           <Content show={indiceMenu === 2}>
             <div
               style={{
@@ -390,7 +443,17 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
-                      <img src={imageProduct1} alt="Imagem Preview" />
+                      <>
+                        <img src={imageProduct1} alt="Imagem Preview" />
+                        <ButtonImageDelete
+                          onClick={() => {
+                            deleteImage(product?.images[0].id, 'image-1');
+                          }}
+                        >
+                          <FaTrash></FaTrash>
+                          Deletar
+                        </ButtonImageDelete>
+                      </>
                     )}
                   </div>
                 )}
@@ -406,7 +469,18 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
-                      <img src={imageProduct2} alt="Imagem Preview" />
+                     
+                      <>
+                       <img src={imageProduct2} alt="Imagem Preview" />
+                      <ButtonImageDelete
+                        onClick={() => {
+                          deleteImage(product?.images[1].id, 'image-2');
+                        }}
+                      >
+                        <FaTrash></FaTrash>
+                        Deletar
+                      </ButtonImageDelete>
+                    </>
                     )}
                   </div>
                 )}
@@ -423,7 +497,18 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
+                     
+                      <>
                       <img src={imageProduct3} alt="Imagem Preview" />
+                     <ButtonImageDelete
+                       onClick={() => {
+                         deleteImage(product?.images[2].id, 'image-3');
+                       }}
+                     >
+                       <FaTrash></FaTrash>
+                       Deletar
+                     </ButtonImageDelete>
+                   </>
                     )}
                   </div>
                 )}
@@ -440,14 +525,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
-                      <img src={imageProduct4} alt="Imagem Preview" />
+                  
+                      <>
+                       <img src={imageProduct4} alt="Imagem Preview" />
+                     <ButtonImageDelete
+                       onClick={() => {
+                         deleteImage(product?.images[3].id, 'image-4');
+                       }}
+                     >
+                       <FaTrash></FaTrash>
+                       Deletar
+                     </ButtonImageDelete>
+                   </>
                     )}
                   </div>
                 )}
               </ContentDropZone>
             </div>
           </Content>
-      
         </ContentMenu>
       </Container>
     </>

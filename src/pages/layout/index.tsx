@@ -28,7 +28,11 @@ const Layout: React.FC = ({ children }) => {
         <div>
           <img src={logo} alt="logo" />
         </div>
-        <button
+        <button 
+        style={{
+          background: 'transparent',
+          border: 'transparent'
+        }}
           type="button"
           onClick={() => {
             setShowMenu(!showMenu);

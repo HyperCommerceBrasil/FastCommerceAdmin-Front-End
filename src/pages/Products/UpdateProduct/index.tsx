@@ -49,7 +49,13 @@ const NewProduct: React.FC = () => {
         const response = await api.get<Product>(
           `/products/listone/${idProduct}`,
         );
-        setProduct(response.data);
+        setProduct({...response.data, price: Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(Number(response.data.price)), price_promotional: Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(Number(response.data.price_promotional))});
       } catch (err) {
         error(`Ocorreu um erro ao trazer os dados do produto`);
 
@@ -117,6 +123,13 @@ const NewProduct: React.FC = () => {
           `/products/listone/${idProduct}`,
         );
         setProduct(responseProduct.data);
+        setProduct({...responseProduct.data, price: Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(Number(responseProduct.data.price)), price_promotional: Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(Number(responseProduct.data.price_promotional))});
      
       } catch (err) {
         setStatusLoad(false);
@@ -135,21 +148,7 @@ const NewProduct: React.FC = () => {
       <Layout>
       <Loader show={statusLoad}></Loader>
         <Container>
-          <header>
-            <FaArrowLeft
-              cursor="pointer"
-              onClick={() => {
-                history.goBack();
-              }}
-              size={32}
-              style={{
-                marginLeft: '16px',
-                marginTop: '5px',
-                marginRight: '16px',
-              }}
-            />
-            <h1>Cadastro de Produto</h1>
-          </header>
+       
           <FormProduct
             functionAction={handleUpdate}
             product={product}

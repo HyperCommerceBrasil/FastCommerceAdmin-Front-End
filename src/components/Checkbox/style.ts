@@ -4,33 +4,21 @@ interface ContentProps {
   error?: boolean;
 }
 
-export const MessageError = styled.div`
-  width: 300px;
-  margin-left: auto;
-  color: #f326;
-`;
-export const ContentInput = styled.div<ContentProps>`
-  height: 50px;
-  width: 100%;
 
+
+export const Container = styled.div<ContentProps>`
   display: flex;
   flex-direction: row;
-  border: 1px silver solid;
-  border-color: ${props => (props.error ? 'red' : 'silver')};
-  border-radius: 5px;
-  padding: 15px;
+  background: transparent;
+  width: 100%;
+  margin: 8px;
 
   input {
-    border: transparent;
-    width: 100%;
+    border-color: red;
   }
-`;
-
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
 
   label {
-    margin: 4px 2px;
+    margin-left: 8px;
+    margin-bottom: 4px;
   }
 `;

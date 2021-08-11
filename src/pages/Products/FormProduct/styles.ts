@@ -9,9 +9,21 @@ export const ContentMenu = styled.div``;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 
   header {
     border-bottom: 1px solid silver;
+
+    div {
+      margin: auto 0;
+      display: flex;
+      flex-direction: row;
+    }
     button {
       margin-left: auto;
       margin-right: 50px;

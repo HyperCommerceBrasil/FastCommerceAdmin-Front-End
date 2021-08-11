@@ -3,7 +3,7 @@ import React, { HTMLAttributes } from 'react';
 import { IconType } from 'react-icons';
 import { FaExclamationCircle } from 'react-icons/fa';
 
-import { ContentInput, Container, MessageError } from './style';
+import { Container } from './style';
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
   Icon?: IconType;
@@ -32,23 +32,23 @@ const Checkbox: React.FC<InputProps> = ({
   return (
     <>
       <Container>
-        <label>{label}</label>
-        <MessageError>
-          <ErrorMessage name={rest.name} />
-        </MessageError>
+        
+      
 
-        <ContentInput error={!!field[1].error}>
+      
      
           <Field type="checkbox"  {...rest}>
             {children}
            </Field>
+         <label>{label}</label>
+           
 
           <FaExclamationCircle
             size={24}
             color="red"
             visibility={field[1].error ? 'visible' : 'hidden'}
           />
-        </ContentInput>
+     
       </Container>
     </>
   );

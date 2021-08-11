@@ -102,22 +102,7 @@ const NewProduct: React.FC = () => {
       <Layout>
         <Loader show={statusLoad}></Loader>
         <Container>
-          <header>
-            <FaArrowLeft
-              cursor="pointer"
-              onClick={() => {
-                history.goBack();
-              }}
-              size={32}
-              style={{
-                marginLeft: '16px',
-                marginTop: '5px',
-                marginRight: '16px',
-              }}
-            />
-            <h1>Cadastro de Produto</h1>
-          </header>
-
+      
 
           <ContentMenu>
             <FormProduct functionAction={handleSaveProduct}></FormProduct>

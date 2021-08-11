@@ -22,9 +22,9 @@ import api from '../../../services/api';
 import MenuTab from '../../../components/MenuTab';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import { resolve } from 'eslint-import-resolver-typescript/lib';
 import { resolveResponse } from '../../../utils/resolverResponse';
-import { FaTrash } from 'react-icons/fa';
+import { FaArrowLeft, FaTrash } from 'react-icons/fa';
+import { useHistory } from 'react-router-dom';
 
 interface Collection {
   id: string;
@@ -193,6 +193,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
     [setFileImageProduct4, fileImageProduct4, imageProduct4],
   );
 
+  const history = useHistory();
   const dropzone1 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop1,
@@ -219,9 +220,9 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   const schemaValidData = Yup.object({
     name: Yup.string()
       .required('Campo obrigatório')
-      .max(50, 'O nome pode ter no máximo 50 characteres')
+      .max(255, 'O nome pode ter no máximo 255 characteres')
       .min(5, 'O nome do produto precisa ter no minimo 5 caracteres'),
-    ean: Yup.string().required('Campo obrigatório').max(20),
+    ean: Yup.string().required('Campo obrigatório').max(30),
     price: Yup.string()
       .required('Campo obrigatório')
       .matches(/[0-9]/, 'O preço precisa ser um numero'),
@@ -237,14 +238,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   return (
     <>
       <Container>
-        <MenuTab
-          setIndice={setIndiceMenu}
-          indice={indiceMenu}
-          tabs={[
-            { name: 'CADASTRO', value: 1 },
-            { name: 'IMAGENS', value: 2 },
-          ]}
-        />
+      
 
         <ContentMenu>
         <Formik
@@ -278,6 +272,10 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                   setIndiceMenu(2);
                 } else {
                   data.details = editorContent;
+                  const numberFormated1 = Number(data.price.replace(/\D+/g, '')) / 100;
+                  const numberFormated2 = Number(data.price_promotional.replace(/\D+/g, '')) / 100;
+                  data.price = String(numberFormated1);
+                  data.price_promotional = String(numberFormated2)
                   console.log(data);
                   functionAction(data, [
                     fileImageProduct1,
@@ -289,6 +287,25 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
               }}
             >
               <Form>
+                <header>
+
+                  <div>
+                  <FaArrowLeft
+              cursor="pointer"
+              onClick={() => {
+                history.push('/products');
+              }}
+              size={32}
+              style={{
+                marginLeft: '16px',
+                marginTop: '5px',
+                marginRight: '16px',
+              }}
+            />
+                <h1>Cadastro de Produto</h1>
+
+                  </div>
+     
                 <Button
                   type="submit"
                   colorTheme="primary"
@@ -298,10 +315,22 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     background: '#159BD8',
                     color: 'white',
                     margin: '16px',
+                    marginLeft: 'auto'
                   }}
                 >
                   Salvar
                 </Button>
+                </header>
+
+                <MenuTab
+          setIndice={setIndiceMenu}
+          indice={indiceMenu}
+          tabs={[
+            { name: 'CADASTRO', value: 1 },
+            { name: 'IMAGENS', value: 2 },
+            { name: 'DETALHES', value: 3 },
+          ]}
+        />
 
           <Content show={indiceMenu === 1}>
            
@@ -323,60 +352,38 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
 
                     />
 
-                    {/* <span style={{ margin: 'auto' }}>
-                      <Switch
-                        name="is_active"
-                        color="primary"
-                        checked={formik.values.is_active}
-                        onChange={formik.handleChange}
-                        style={{
-                          color: 'green',
-                          margin: 'auto',
-                        }}
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                      />
-                    </span> */}
                   </div>
 
                   <Input
                     name="ean"
                     placeholder="Codigo de Barras"
                     label="Código de Barras"
-                    style={{
-                      margin: ' 0 10px'
-                    }}
+                   
                   />
-                  <Input name="price" placeholder="Preço" label="Preço"  style={{
-                        margin: ' 0 10px'
-                      }} />
+                  <Input name="price" placeholder="Preço" mask="currency"  label="Preço"   />
                   <Input
                     name="price_promotional"
+                    mask="currency"
                     placeholder="Preço promocional"
                     label="Preço promocional"
-                    style={{
-                      margin: ' 0 10px'
-                    }}
+                    type="number"
+                
+                    
                   />
                   <Input
                     name="description"
                     placeholder="Descrição"
                     label="Descrição"
-                    style={{
-                      margin: ' 0 10px'
-                    }}
+                 
                   />
                   <Input
                     name="quantity"
                     placeholder="Quantidade"
                     label="Quantidade"
-                    style={{
-                      margin: '10px'
-                    }}
+                   
                   />
 
-                  <InputLabel htmlFor="filled-age-native-simple">
-                    Coleção
-                  </InputLabel>
+                
                   <Select
                     name="collectionId"
                     id="collectionId"
@@ -392,7 +399,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     })}
                   </Select>
 
-                  <fieldset style={{ padding: '10px', borderRadius: '10px' }}>
+                  <fieldset style={{ padding: '10px', borderRadius: '10px', marginBottom: '8px' }}>
                     <legend>Opções Gerais</legend>
 
                     <Checkbox
@@ -402,22 +409,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     ></Checkbox>
                   </fieldset>
                 </ContentForm>
-                <Editor
-                  value={editorContent}
-                  apiKey="vrzyvdpq0s7ufjhjrhrcysrwkvwwk2tbzrpq02d7k5m1knqg"
-                  onEditorChange={handleEditorChange}
-                  init={{
-                    plugins:
-                      'advcode print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
-                    toolbar:
-                      'code undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-                    autosave_ask_before_unload: true,
-                    fullscreen_native: true,
-                    image_advtab: true,
-                    importcss_append: true,
-                    
-                  }}
-                />
+              
               
           </Content>
           </Form>
@@ -542,6 +534,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                 )}
               </ContentDropZone>
             </div>
+          </Content>
+          <Content show={indiceMenu === 3}>
+          <Editor
+                  value={editorContent}
+                  apiKey="vrzyvdpq0s7ufjhjrhrcysrwkvwwk2tbzrpq02d7k5m1knqg"
+                  onEditorChange={handleEditorChange}
+                  init={{
+                    plugins:
+                      'advcode print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+                    toolbar:
+                      'code undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                    autosave_ask_before_unload: true,
+                    fullscreen_native: true,
+                    image_advtab: true,
+                    importcss_append: true,
+                    
+                  }}
+                />
           </Content>
         </ContentMenu>
       </Container>

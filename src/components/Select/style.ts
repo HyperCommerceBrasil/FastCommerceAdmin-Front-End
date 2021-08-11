@@ -20,15 +20,25 @@ export const ContentInput = styled.div<ContentProps>`
   border-radius: 5px;
   padding: 15px;
 
-  input {
+  
+
+  select {
     border: transparent;
     width: 100%;
+    background: transparent;
+
+    option {
+      width: 100%;
+      border: transparent;
+      padding: 15px;
+    }
   }
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 8px;
 
   label {
     margin: 4px 2px;

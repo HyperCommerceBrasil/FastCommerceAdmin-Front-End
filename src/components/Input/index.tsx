@@ -1,4 +1,3 @@
-import { Console } from 'console';
 import { Field, ErrorMessage, useField } from 'formik';
 import React, { HTMLAttributes } from 'react';
 import { IconType } from 'react-icons';
@@ -43,7 +42,6 @@ const Input: React.FC<InputProps> = ({
 
         <Field cursor="not-allowed" disabled={disabled} {...rest}>
           {({ field, form: { touched, errors }, meta }: any) => (
-         
             <ContentInput error={!!fieldCustom[1].error}>
               <input
                 {...field}
@@ -79,21 +77,3 @@ const Input: React.FC<InputProps> = ({
 };
 
 export default Input;
-
-/***
- * 
- * 
- * {(evt) => {
-                    if(mask !== 'currency'){
-                        evt.target.value = evt.target.value
-                    } else {
-                      const valNumeric =  evt.target.value.replace(/\D+/g, '')
-
-                      const formatVirgula = Number(valNumeric) / 100;
-                       const valFormated = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(formatVirgula));
-                       console.log(valFormated)
-                      evt.target.value = String(valFormated)
-                   
-                    }
-                  }}
- */

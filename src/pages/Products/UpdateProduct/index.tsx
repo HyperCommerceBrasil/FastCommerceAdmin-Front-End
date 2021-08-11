@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { error, success } from '@pnotify/core';
-import { FaArrowLeft } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router-dom';
 import { Container } from './styles';
 import api from '../../../services/api';
@@ -41,7 +40,7 @@ const NewProduct: React.FC = () => {
   const [product, setProduct] = useState<Product>({} as Product);
   const history = useHistory();
   const { idProduct } = useParams<{ idProduct: string }>();
-  const [statusLoad, setStatusLoad] = useState(false); 
+  const [statusLoad, setStatusLoad] = useState(false);
 
   useEffect(() => {
     async function getProduct() {
@@ -49,13 +48,17 @@ const NewProduct: React.FC = () => {
         const response = await api.get<Product>(
           `/products/listone/${idProduct}`,
         );
-        setProduct({...response.data, price: Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(Number(response.data.price)), price_promotional: Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(Number(response.data.price_promotional))});
+        setProduct({
+          ...response.data,
+          price: Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }).format(Number(response.data.price)),
+          price_promotional: Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }).format(Number(response.data.price_promotional)),
+        });
       } catch (err) {
         error(`Ocorreu um erro ao trazer os dados do produto`);
 
@@ -72,70 +75,68 @@ const NewProduct: React.FC = () => {
       const dataFile = new FormData();
       try {
         const response = await api.put<Product>(`/products/${idProduct}`, data);
-        console.log("teste 4 img")
+        console.log('teste 4 img');
         console.log(data);
-       
 
         dataFile.append('productId', response.data.id || '');
- 
-    
-          const dataFile1 = new FormData();
-          const dataFile2 = new FormData();
-  
-          const dataFile3 = new FormData();
-  
-          const dataFile4 = new FormData();
 
-          
-         
-          dataFile1.append('productImage', images[0] || '');
-          dataFile1.append('productId', response.data.id || '');
+        const dataFile1 = new FormData();
+        const dataFile2 = new FormData();
 
-          if (images[0]) {
-            await api.post('products/upload/image', dataFile1);
-          }
+        const dataFile3 = new FormData();
 
-          dataFile2.append('productImage',  images[1] || '');
-          dataFile2.append('productId', response.data.id || '');
+        const dataFile4 = new FormData();
 
-          if (images[1]) {
-            await api.post('products/upload/image', dataFile2);
-          }
+        dataFile1.append('productImage', images[0] || '');
+        dataFile1.append('productId', response.data.id || '');
 
-          dataFile3.append('productImage',  images[2] || '');
-          dataFile3.append('productId', response.data.id || '');
+        if (images[0]) {
+          await api.post('products/upload/image', dataFile1);
+        }
 
-          if (images[2]) {
-            await api.post('products/upload/image', dataFile3);
-          }
+        dataFile2.append('productImage', images[1] || '');
+        dataFile2.append('productId', response.data.id || '');
 
-          dataFile4.append('productImage',  images[3] || '');
-          dataFile4.append('productId', response.data.id || '');
+        if (images[1]) {
+          await api.post('products/upload/image', dataFile2);
+        }
 
-          if (images[3]) {
-            await api.post('products/upload/image', dataFile4);
-          }
+        dataFile3.append('productImage', images[2] || '');
+        dataFile3.append('productId', response.data.id || '');
 
-       
+        if (images[2]) {
+          await api.post('products/upload/image', dataFile3);
+        }
+
+        dataFile4.append('productImage', images[3] || '');
+        dataFile4.append('productId', response.data.id || '');
+
+        if (images[3]) {
+          await api.post('products/upload/image', dataFile4);
+        }
+
         success('Registro Atualizado com sucesso');
         setStatusLoad(false);
         const responseProduct = await api.get<Product>(
           `/products/listone/${idProduct}`,
         );
         setProduct(responseProduct.data);
-        setProduct({...responseProduct.data, price: Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(Number(responseProduct.data.price)), price_promotional: Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }).format(Number(responseProduct.data.price_promotional))});
-     
+        setProduct({
+          ...responseProduct.data,
+          price: Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }).format(Number(responseProduct.data.price)),
+          price_promotional: Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          }).format(Number(responseProduct.data.price_promotional)),
+        });
       } catch (err) {
         setStatusLoad(false);
         dataFile.delete('productImage');
         error('Ocorreu um erro ao salvar o produto verifique o console');
-        
+
         console.log(err);
       }
     },
@@ -146,9 +147,8 @@ const NewProduct: React.FC = () => {
   return (
     <>
       <Layout>
-      <Loader show={statusLoad}></Loader>
+        <Loader show={statusLoad}></Loader>
         <Container>
-       
           <FormProduct
             functionAction={handleUpdate}
             product={product}

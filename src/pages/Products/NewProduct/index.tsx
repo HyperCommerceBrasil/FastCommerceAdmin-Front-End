@@ -1,11 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { error, success } from '@pnotify/core';
-import { FaArrowLeft } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
-import {
-  Container,
-  ContentMenu,
-} from './styles';
+import { Container, ContentMenu } from './styles';
 import api from '../../../services/api';
 
 import Layout from '../../layout';
@@ -25,16 +21,12 @@ interface Product {
   trending: boolean;
 }
 const NewProduct: React.FC = () => {
-
-  const [statusLoad, setStatusLoad] = useState(false); 
+  const [statusLoad, setStatusLoad] = useState(false);
 
   const history = useHistory();
 
-
   const handleSaveProduct = useCallback(
     async (data: Product, productImages: string[]) => {
-
-
       try {
         setStatusLoad(true);
         const response = await api.post<Product>('/products', data);
@@ -54,21 +46,21 @@ const NewProduct: React.FC = () => {
             await api.post('products/upload/image', dataFile1);
           }
 
-          dataFile2.append('productImage',  productImages[1] || '');
+          dataFile2.append('productImage', productImages[1] || '');
           dataFile2.append('productId', response.data.id || '');
 
           if (dataFile2) {
             await api.post('products/upload/image', dataFile2);
           }
 
-          dataFile3.append('productImage',  productImages[2] || '');
+          dataFile3.append('productImage', productImages[2] || '');
           dataFile3.append('productId', response.data.id || '');
 
           if (dataFile3) {
             await api.post('products/upload/image', dataFile3);
           }
 
-          dataFile4.append('productImage',  productImages[3] || '');
+          dataFile4.append('productImage', productImages[3] || '');
           dataFile4.append('productId', response.data.id || '');
 
           if (dataFile4) {
@@ -102,12 +94,9 @@ const NewProduct: React.FC = () => {
       <Layout>
         <Loader show={statusLoad}></Loader>
         <Container>
-      
-
           <ContentMenu>
             <FormProduct functionAction={handleSaveProduct}></FormProduct>
-        
-          </ContentMenu> 
+          </ContentMenu>
         </Container>
       </Layout>
     </>

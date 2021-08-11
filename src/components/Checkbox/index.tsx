@@ -1,4 +1,4 @@
-import { Field, ErrorMessage, useField } from 'formik';
+import { Field, useField } from 'formik';
 import React, { HTMLAttributes } from 'react';
 import { IconType } from 'react-icons';
 import { FaExclamationCircle } from 'react-icons/fa';
@@ -26,29 +26,22 @@ const Checkbox: React.FC<InputProps> = ({
 }) => {
   const field = useField({
     ...rest,
-    children
+    children,
   });
 
   return (
     <>
       <Container>
-        
-      
+        <Field type="checkbox" {...rest}>
+          {children}
+        </Field>
+        <label>{label}</label>
 
-      
-     
-          <Field type="checkbox"  {...rest}>
-            {children}
-           </Field>
-         <label>{label}</label>
-           
-
-          <FaExclamationCircle
-            size={24}
-            color="red"
-            visibility={field[1].error ? 'visible' : 'hidden'}
-          />
-     
+        <FaExclamationCircle
+          size={24}
+          color="red"
+          visibility={field[1].error ? 'visible' : 'hidden'}
+        />
       </Container>
     </>
   );

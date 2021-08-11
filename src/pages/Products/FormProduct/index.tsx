@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Editor } from '@tinymce/tinymce-react';
 import Select from './../../../components/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import * as Yup from 'yup';
 import Checkbox from './../../../components/Checkbox';
 

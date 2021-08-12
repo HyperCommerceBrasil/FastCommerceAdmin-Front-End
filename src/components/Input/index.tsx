@@ -14,6 +14,9 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   disabled?: string;
   cursor?: string;
   value?: string;
+  step?: string;
+  min?: string;
+  mask?: 'currency';
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,9 +25,10 @@ const Input: React.FC<InputProps> = ({
   children,
   label,
   Icon,
+  mask,
   ...rest
 }) => {
-  const field = useField({
+  const fieldCustom = useField({
     ...rest,
   });
 
@@ -36,15 +40,37 @@ const Input: React.FC<InputProps> = ({
           <ErrorMessage name={rest.name} />
         </MessageError>
 
-        <ContentInput error={!!field[1].error}>
-          <Field cursor="not-allowed" disabled={disabled} {...rest} />
+        <Field cursor="not-allowed" disabled={disabled} {...rest}>
+          {({ field, form: { touched, errors }, meta }: any) => (
+            <ContentInput error={!!fieldCustom[1].error}>
+              <input
+                {...field}
+                type="text"
+                onChange={evt => {
+                  if (mask !== 'currency') {
+                    fieldCustom[2].setValue(evt.target.value);
+                  } else {
+                    const valNumeric = evt.target.value.replace(/\D+/g, '');
 
-          <FaExclamationCircle
-            size={24}
-            color="red"
-            visibility={field[1].error ? 'visible' : 'hidden'}
-          />
-        </ContentInput>
+                    const formatVirgula = Number(valNumeric) / 100;
+                    const valFormated = Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(Number(formatVirgula));
+
+                    fieldCustom[2].setValue(valFormated);
+                  }
+                }}
+              ></input>
+            </ContentInput>
+          )}
+        </Field>
+
+        <FaExclamationCircle
+          size={24}
+          color="red"
+          visibility={fieldCustom[1].error ? 'visible' : 'hidden'}
+        />
       </Container>
     </>
   );

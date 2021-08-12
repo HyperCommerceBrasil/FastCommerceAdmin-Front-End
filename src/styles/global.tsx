@@ -2,6 +2,8 @@ import { createGlobalStyle } from 'styled-components';
 import '@pnotify/core/dist/PNotify.css';
 
 import '@pnotify/core/dist/BrightTheme.css';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 export default createGlobalStyle`
   * {

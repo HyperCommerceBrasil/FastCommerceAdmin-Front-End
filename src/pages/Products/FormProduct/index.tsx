@@ -129,7 +129,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
         success(msg);
       }
     }
-  }, []);
+  }, [product]);
 
   const onDrop1 = useCallback(
     acceptedFiles => {

@@ -5,6 +5,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import Select from './../../../components/Select';
 import * as Yup from 'yup';
 import Checkbox from './../../../components/Checkbox';
+import { confirmAlert } from 'react-confirm-alert';
 
 import { error, success } from '@pnotify/core';
 import { Form, Formik } from 'formik';
@@ -104,8 +105,10 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
 
   const deleteImage = useCallback(async (imageId, imageRef) => {
     try {
-      await api.delete(`/products/image/delete/${imageId}`);
-    
+      if(product){
+        await api.delete(`/products/image/delete/${imageId}`);
+      }
+      
 
       if (imageRef === 'image-1') {
         setImageProduct1('')
@@ -126,7 +129,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
         success(msg);
       }
     }
-  }, []);
+  }, [product]);
 
   const onDrop1 = useCallback(
     acceptedFiles => {
@@ -259,14 +262,14 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
               enableReinitialize={true}
               onSubmit={data => {
                 if (
-                  !imageProduct1 ||
-                  !imageProduct2 ||
-                  !imageProduct3 ||
-                  !imageProduct4
+                  imageProduct1 === '' &&
+                  imageProduct2 === ''&&
+                  imageProduct3 === ''&&
+                  imageProduct4 === ''
                 ) {
                   error({
                     title: 'Erro ao gravar',
-                    text: 'Por favor informe as 4 imagens para conseguir salvar o produto',
+                    text: 'Por favor informe pelo menos uma imagem',
                   });
                   setIndiceMenu(2);
                 } else {
@@ -438,7 +441,25 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <img src={imageProduct1} alt="Imagem Preview" />
                         <ButtonImageDelete
                           onClick={() => {
-                            deleteImage(product?.images[0].id, 'image-1');
+                            confirmAlert({
+                              title: 'ATENÇÃO',
+                              message: 'Tem certeza que quer excluir está imagem ?',
+                              buttons: [
+                                {
+                                  label: 'Sim',
+                                  onClick: () => {
+                                    deleteImage(product?.images[0].id, 'image-1') 
+                                    success("Imagem Excluida com sucesso")
+                                  }
+                                 
+                                },
+                                {
+                                  label: 'Não',
+                                  onClick: () => {}
+                                }
+                              ]
+                            });
+                            // deleteImage(product?.images[0].id, 'image-1');
                           }}
                         >
                           <FaTrash></FaTrash>
@@ -465,7 +486,25 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                        <img src={imageProduct2} alt="Imagem Preview" />
                       <ButtonImageDelete
                         onClick={() => {
-                          deleteImage(product?.images[1].id, 'image-2');
+                          confirmAlert({
+                            title: 'ATENÇÃO',
+                            message: 'Tem certeza que quer excluir está imagem ?',
+                            buttons: [
+                              {
+                                label: 'Sim',
+                                onClick: () => {
+                                  deleteImage(product?.images[1].id, 'image-2');
+                                  success("Imagem Excluida com sucesso")
+                                }
+                               
+                              },
+                              {
+                                label: 'Não',
+                                onClick: () => {}
+                              }
+                            ]
+                          });
+                        
                         }}
                       >
                         <FaTrash></FaTrash>
@@ -493,7 +532,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                       <img src={imageProduct3} alt="Imagem Preview" />
                      <ButtonImageDelete
                        onClick={() => {
-                         deleteImage(product?.images[2].id, 'image-3');
+                         confirmAlert({
+                            title: 'ATENÇÃO',
+                            message: 'Tem certeza que quer excluir está imagem ?',
+                            buttons: [
+                              {
+                                label: 'Sim',
+                                onClick: () => {
+                                  deleteImage(product?.images[2].id, 'image-3');
+                                  success("Imagem Excluida com sucesso")
+                                }
+                               
+                              },
+                              {
+                                label: 'Não',
+                                onClick: () => {}
+                              }
+                            ]
+                          });
                        }}
                      >
                        <FaTrash></FaTrash>
@@ -521,7 +577,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                        <img src={imageProduct4} alt="Imagem Preview" />
                      <ButtonImageDelete
                        onClick={() => {
-                         deleteImage(product?.images[3].id, 'image-4');
+                         confirmAlert({
+                          title: 'ATENÇÃO',
+                          message: 'Tem certeza que quer excluir está imagem ?',
+                          buttons: [
+                            {
+                              label: 'Sim',
+                              onClick: () => {
+                                deleteImage(product?.images[3].id, 'image-4');
+                                success("Imagem Excluida com sucesso")
+                              }
+                             
+                            },
+                            {
+                              label: 'Não',
+                              onClick: () => {}
+                            }
+                          ]
+                        });
                        }}
                      >
                        <FaTrash></FaTrash>

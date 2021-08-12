@@ -42,28 +42,28 @@ const NewProduct: React.FC = () => {
           dataFile1.append('productImage', productImages[0] || '');
           dataFile1.append('productId', response.data.id || '');
 
-          if (productImages[0]) {
+          if (dataFile1) {
             await api.post('products/upload/image', dataFile1);
           }
 
           dataFile2.append('productImage', productImages[1] || '');
           dataFile2.append('productId', response.data.id || '');
 
-          if (productImages[1]) {
+          if (dataFile2) {
             await api.post('products/upload/image', dataFile2);
           }
 
           dataFile3.append('productImage', productImages[2] || '');
           dataFile3.append('productId', response.data.id || '');
 
-          if (productImages[2]) {
+          if (dataFile3) {
             await api.post('products/upload/image', dataFile3);
           }
 
           dataFile4.append('productImage', productImages[3] || '');
           dataFile4.append('productId', response.data.id || '');
 
-          if (productImages[3]) {
+          if (dataFile4) {
             await api.post('products/upload/image', dataFile4);
           }
 
@@ -82,10 +82,8 @@ const NewProduct: React.FC = () => {
         }
 
         history.push('/products');
-        setStatusLoad(false);
       } catch (err) {
         error(err.response.data.message);
-        setStatusLoad(false);
       }
     },
     // eslint-disable-next-line

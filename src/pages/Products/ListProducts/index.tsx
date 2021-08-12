@@ -144,7 +144,7 @@ const ListProducts: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      history.push(`/products/update/${product.id}`);
+                      window.location.href = `/products/update/${product.id}`;
                     }}
                   >
                     <FaEdit />

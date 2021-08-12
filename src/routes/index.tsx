@@ -72,7 +72,7 @@ const Routes: React.FC = () => (
         exact
       />
 
-      <Route path="/register" component={() => <Register />} exact />
+      <Route path="/register" isPrivate component={() => <Register />} exact />
       <Route
         path="/login"
         isPrivate={false}

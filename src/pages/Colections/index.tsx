@@ -112,7 +112,6 @@ const Collection: React.FC = () => {
         <Container>
           <ModalCustom
             show={openModal}
-            closeModal={setOpenModal}
             title="Adicionar nova coleção"
             widthPercent="500px"
           >

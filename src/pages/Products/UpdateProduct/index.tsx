@@ -35,6 +35,7 @@ interface Product {
   images: Image[];
   details: string;
   collectionId: string;
+  isFreeShipping: boolean;
 }
 const NewProduct: React.FC = () => {
   const [product, setProduct] = useState<Product>({} as Product);

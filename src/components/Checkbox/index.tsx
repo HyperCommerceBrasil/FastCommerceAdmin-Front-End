@@ -35,7 +35,7 @@ const Checkbox: React.FC<InputProps> = ({
         <Field type="checkbox" {...rest}>
           {children}
         </Field>
-        <label>{label}</label>
+        <label htmlFor={rest.id}>{label}</label>
 
         <FaExclamationCircle
           size={24}

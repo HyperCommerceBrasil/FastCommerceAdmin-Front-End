@@ -51,6 +51,7 @@ interface Product {
   quantity: string;
   collectionId: string;
   collection: Collection;
+  isFreeShipping: boolean;
 }
 
 interface FormProps {
@@ -103,33 +104,34 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
     }
   }, [product]);
 
-  const deleteImage = useCallback(async (imageId, imageRef) => {
-    try {
-      if(product){
-        await api.delete(`/products/image/delete/${imageId}`);
-      }
-      
+  const deleteImage = useCallback(
+    async (imageId, imageRef) => {
+      try {
+        if (product) {
+          await api.delete(`/products/image/delete/${imageId}`);
+        }
 
-      if (imageRef === 'image-1') {
-        setImageProduct1('')
+        if (imageRef === 'image-1') {
+          setImageProduct1('');
+        }
+        if (imageRef === 'image-2') {
+          setImageProduct2('');
+        }
+        if (imageRef === 'image-3') {
+          setImageProduct3('');
+        }
+        if (imageRef === 'image-4') {
+          setImageProduct4('');
+        }
+      } catch (err) {
+        const msg = resolveResponse(err.reponse);
+        if (err) {
+          success(msg);
+        }
       }
-      if (imageRef === 'image-2') {
-        setImageProduct2('')
-      }
-      if (imageRef === 'image-3') {
-        setImageProduct3('')
-      }
-      if (imageRef === 'image-4') {
-        setImageProduct4('')
-      }
- 
-    } catch (err) {
-      const msg = resolveResponse(err.reponse);
-      if (err) {
-        success(msg);
-      }
-    }
-  }, [product]);
+    },
+    [product],
+  );
 
   const onDrop1 = useCallback(
     acceptedFiles => {
@@ -199,24 +201,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   const dropzone1 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop1,
-    disabled: !!!!imageProduct1
+    disabled: !!!!imageProduct1,
   });
   const dropzone2 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop2,
-    disabled: !!!!imageProduct2
+    disabled: !!!!imageProduct2,
   });
 
   const dropzone3 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop3,
-    disabled: !!!!imageProduct3
+    disabled: !!!!imageProduct3,
   });
 
   const dropzone4 = useDropzone({
     accept: ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
     onDrop: onDrop4,
-    disabled: !!!!imageProduct4
+    disabled: !!!!imageProduct4,
   });
 
   const schemaValidData = Yup.object({
@@ -240,74 +242,73 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   return (
     <>
       <Container>
-      
-
         <ContentMenu>
-        <Formik
-              initialValues={{
-                name: product?.name || '',
-                trending: product?.trending || false,
-                is_active: product?.is_active || true,
-                ean: product?.ean || '',
-                price: product?.price || '',
-                price_promotional: product?.price_promotional || '',
-                description: product?.description || '',
-                details: product?.details || '',
-                quantity: product?.quantity || '',
-                collectionId: product?.collection?.id || '',
-              }}
-              validateOnBlur={false}
-              validateOnChange={false}
-              validationSchema={schemaValidData}
-              enableReinitialize={true}
-              onSubmit={data => {
-                if (
-                  imageProduct1 === '' &&
-                  imageProduct2 === ''&&
-                  imageProduct3 === ''&&
-                  imageProduct4 === ''
-                ) {
-                  error({
-                    title: 'Erro ao gravar',
-                    text: 'Por favor informe pelo menos uma imagem',
-                  });
-                  setIndiceMenu(2);
-                } else {
-                  data.details = editorContent;
-                  const numberFormated1 = Number(data.price.replace(/\D+/g, '')) / 100;
-                  const numberFormated2 = Number(data.price_promotional.replace(/\D+/g, '')) / 100;
-                  data.price = String(numberFormated1);
-                  data.price_promotional = String(numberFormated2)
-                  console.log(data);
-                  functionAction(data, [
-                    fileImageProduct1,
-                    fileImageProduct2,
-                    fileImageProduct3,
-                    fileImageProduct4,
-                  ]);
-                }
-              }}
-            >
-              <Form>
-                <header>
-
-                  <div>
+          <Formik
+            initialValues={{
+              name: product?.name || '',
+              trending: product?.trending || false,
+              is_active: product?.is_active || false,
+              ean: product?.ean || '',
+              price: product?.price || '',
+              price_promotional: product?.price_promotional || '',
+              description: product?.description || '',
+              details: product?.details || '',
+              quantity: product?.quantity || '',
+              isFreeShipping: product?.isFreeShipping || false,
+              collectionId: product?.collection?.id || '',
+            }}
+            validateOnBlur={false}
+            validateOnChange={false}
+            validationSchema={schemaValidData}
+            enableReinitialize={true}
+            onSubmit={data => {
+              if (
+                imageProduct1 === '' &&
+                imageProduct2 === '' &&
+                imageProduct3 === '' &&
+                imageProduct4 === ''
+              ) {
+                error({
+                  title: 'Erro ao gravar',
+                  text: 'Por favor informe pelo menos uma imagem',
+                });
+                setIndiceMenu(2);
+              } else {
+                data.details = editorContent;
+                const numberFormated1 =
+                  Number(data.price.replace(/\D+/g, '')) / 100;
+                const numberFormated2 =
+                  Number(data.price_promotional.replace(/\D+/g, '')) / 100;
+                data.price = String(numberFormated1);
+                data.price_promotional = String(numberFormated2);
+                console.log(data);
+                functionAction(data, [
+                  fileImageProduct1,
+                  fileImageProduct2,
+                  fileImageProduct3,
+                  fileImageProduct4,
+                ]);
+              }
+            }}
+          >
+            <Form>
+              <header>
+                <div>
                   <FaArrowLeft
-              cursor="pointer"
-              onClick={() => {
-                history.push('/products');
-              }}
-              size={32}
-              style={{
-                marginLeft: '16px',
-                marginTop: '5px',
-                marginRight: '16px',
-              }}
-            />
-                <h1>Cadastro de Produto</h1>
+                    cursor="pointer"
+                    onClick={() => {
+                      history.push('/products');
+                    }}
+                    size={32}
+                    style={{
+                      marginLeft: '16px',
+                      marginTop: '5px',
+                      marginRight: '16px',
+                    }}
+                  />
+                  <h1>Cadastro de Produto</h1>
+                </div>
 
-                  </div>
-     
                 <Button
                   type="submit"
                   colorTheme="primary"
@@ -317,30 +318,30 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     background: '#159BD8',
                     color: 'white',
                     margin: '16px',
-                    marginLeft: 'auto'
+                    marginLeft: 'auto',
                   }}
                 >
                   Salvar
                 </Button>
-                </header>
+              </header>
 
-                <MenuTab
-          setIndice={setIndiceMenu}
-          indice={indiceMenu}
-          tabs={[
-            { name: 'CADASTRO', value: 1 },
-            { name: 'IMAGENS', value: 2 },
-            { name: 'DETALHES', value: 3 },
-          ]}
-        />
+              <MenuTab
+                setIndice={setIndiceMenu}
+                indice={indiceMenu}
+                tabs={[
+                  { name: 'CADASTRO', value: 1 },
+                  { name: 'IMAGENS', value: 2 },
+                  { name: 'DETALHES', value: 3 },
+                ]}
+              />
 
-          <Content show={indiceMenu === 1}>
-           
+              <Content show={indiceMenu === 1}>
                 <ContentForm>
                   <div
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
+                      
                     }}
                   >
                     <Input
@@ -348,44 +349,44 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                       id="name"
                       placeholder="Nome do Produto"
                       label="Nome do Produto"
-                      style={{
-                        margin: ' 0 10px'
-                      }}
-
+                      style={{width: '100%'}}
                     />
-
+                    <Checkbox
+                      name="is_active"
+                      id="is_active"
+                      label="Ativo"
+                    ></Checkbox>
                   </div>
 
                   <Input
                     name="ean"
                     placeholder="Codigo de Barras"
                     label="Código de Barras"
-                   
                   />
-                  <Input name="price" placeholder="Preço" mask="currency"  label="Preço"   />
+                  <Input
+                    name="price"
+                    placeholder="Preço"
+                    mask="currency"
+                    label="Preço"
+                  />
                   <Input
                     name="price_promotional"
                     mask="currency"
                     placeholder="Preço promocional"
                     label="Preço promocional"
                     type="number"
-                
-                    
                   />
                   <Input
                     name="description"
                     placeholder="Descrição"
                     label="Descrição"
-                 
                   />
                   <Input
                     name="quantity"
                     placeholder="Quantidade"
                     label="Quantidade"
-                   
                   />
 
-                
                   <Select
                     name="collectionId"
                     id="collectionId"
@@ -401,7 +402,13 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     })}
                   </Select>
 
-                  <fieldset style={{ padding: '10px', borderRadius: '10px', marginBottom: '8px' }}>
+                  <fieldset
+                    style={{
+                      padding: '10px',
+                      borderRadius: '10px',
+                      marginBottom: '8px',
+                    }}
+                  >
                     <legend>Opções Gerais</legend>
 
                     <Checkbox
@@ -409,13 +416,17 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                       id="trending  "
                       label="Aparece na Home"
                     ></Checkbox>
+
+                    <Checkbox
+                      name="isFreeShipping"
+                      id="isFreeShipping  "
+                      label="Frete Gratis"
+                    ></Checkbox>
                   </fieldset>
                 </ContentForm>
-              
-              
-          </Content>
-          </Form>
-            </Formik>
+              </Content>
+            </Form>
+          </Formik>
           <Content show={indiceMenu === 2}>
             <div
               style={{
@@ -443,21 +454,24 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                           onClick={() => {
                             confirmAlert({
                               title: 'ATENÇÃO',
-                              message: 'Tem certeza que quer excluir está imagem ?',
+                              message:
+                                'Tem certeza que quer excluir está imagem ?',
                               buttons: [
                                 {
                                   label: 'Sim',
                                   onClick: () => {
-                                    deleteImage(product?.images[0].id, 'image-1') 
-                                    success("Imagem Excluida com sucesso")
-                                  }
-                                 
+                                    deleteImage(
+                                      product?.images[0].id,
+                                      'image-1',
+                                    );
+                                    success('Imagem Excluida com sucesso');
+                                  },
                                 },
                                 {
                                   label: 'Não',
-                                  onClick: () => {}
-                                }
-                              ]
+                                  onClick: () => {},
+                                },
+                              ],
                             });
                             // deleteImage(product?.images[0].id, 'image-1');
                           }}
@@ -481,36 +495,37 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
-                     
                       <>
-                       <img src={imageProduct2} alt="Imagem Preview" />
-                      <ButtonImageDelete
-                        onClick={() => {
-                          confirmAlert({
-                            title: 'ATENÇÃO',
-                            message: 'Tem certeza que quer excluir está imagem ?',
-                            buttons: [
-                              {
-                                label: 'Sim',
-                                onClick: () => {
-                                  deleteImage(product?.images[1].id, 'image-2');
-                                  success("Imagem Excluida com sucesso")
-                                }
-                               
-                              },
-                              {
-                                label: 'Não',
-                                onClick: () => {}
-                              }
-                            ]
-                          });
-                        
-                        }}
-                      >
-                        <FaTrash></FaTrash>
-                        Deletar
-                      </ButtonImageDelete>
-                    </>
+                        <img src={imageProduct2} alt="Imagem Preview" />
+                        <ButtonImageDelete
+                          onClick={() => {
+                            confirmAlert({
+                              title: 'ATENÇÃO',
+                              message:
+                                'Tem certeza que quer excluir está imagem ?',
+                              buttons: [
+                                {
+                                  label: 'Sim',
+                                  onClick: () => {
+                                    deleteImage(
+                                      product?.images[1].id,
+                                      'image-2',
+                                    );
+                                    success('Imagem Excluida com sucesso');
+                                  },
+                                },
+                                {
+                                  label: 'Não',
+                                  onClick: () => {},
+                                },
+                              ],
+                            });
+                          }}
+                        >
+                          <FaTrash></FaTrash>
+                          Deletar
+                        </ButtonImageDelete>
+                      </>
                     )}
                   </div>
                 )}
@@ -527,35 +542,37 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
-                     
                       <>
-                      <img src={imageProduct3} alt="Imagem Preview" />
-                     <ButtonImageDelete
-                       onClick={() => {
-                         confirmAlert({
-                            title: 'ATENÇÃO',
-                            message: 'Tem certeza que quer excluir está imagem ?',
-                            buttons: [
-                              {
-                                label: 'Sim',
-                                onClick: () => {
-                                  deleteImage(product?.images[2].id, 'image-3');
-                                  success("Imagem Excluida com sucesso")
-                                }
-                               
-                              },
-                              {
-                                label: 'Não',
-                                onClick: () => {}
-                              }
-                            ]
-                          });
-                       }}
-                     >
-                       <FaTrash></FaTrash>
-                       Deletar
-                     </ButtonImageDelete>
-                   </>
+                        <img src={imageProduct3} alt="Imagem Preview" />
+                        <ButtonImageDelete
+                          onClick={() => {
+                            confirmAlert({
+                              title: 'ATENÇÃO',
+                              message:
+                                'Tem certeza que quer excluir está imagem ?',
+                              buttons: [
+                                {
+                                  label: 'Sim',
+                                  onClick: () => {
+                                    deleteImage(
+                                      product?.images[2].id,
+                                      'image-3',
+                                    );
+                                    success('Imagem Excluida com sucesso');
+                                  },
+                                },
+                                {
+                                  label: 'Não',
+                                  onClick: () => {},
+                                },
+                              ],
+                            });
+                          }}
+                        >
+                          <FaTrash></FaTrash>
+                          Deletar
+                        </ButtonImageDelete>
+                      </>
                     )}
                   </div>
                 )}
@@ -572,35 +589,37 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         <p>Arraste ou clique aqui para selecionar a imagem</p>
                       </div>
                     ) : (
-                  
                       <>
-                       <img src={imageProduct4} alt="Imagem Preview" />
-                     <ButtonImageDelete
-                       onClick={() => {
-                         confirmAlert({
-                          title: 'ATENÇÃO',
-                          message: 'Tem certeza que quer excluir está imagem ?',
-                          buttons: [
-                            {
-                              label: 'Sim',
-                              onClick: () => {
-                                deleteImage(product?.images[3].id, 'image-4');
-                                success("Imagem Excluida com sucesso")
-                              }
-                             
-                            },
-                            {
-                              label: 'Não',
-                              onClick: () => {}
-                            }
-                          ]
-                        });
-                       }}
-                     >
-                       <FaTrash></FaTrash>
-                       Deletar
-                     </ButtonImageDelete>
-                   </>
+                        <img src={imageProduct4} alt="Imagem Preview" />
+                        <ButtonImageDelete
+                          onClick={() => {
+                            confirmAlert({
+                              title: 'ATENÇÃO',
+                              message:
+                                'Tem certeza que quer excluir está imagem ?',
+                              buttons: [
+                                {
+                                  label: 'Sim',
+                                  onClick: () => {
+                                    deleteImage(
+                                      product?.images[3].id,
+                                      'image-4',
+                                    );
+                                    success('Imagem Excluida com sucesso');
+                                  },
+                                },
+                                {
+                                  label: 'Não',
+                                  onClick: () => {},
+                                },
+                              ],
+                            });
+                          }}
+                        >
+                          <FaTrash></FaTrash>
+                          Deletar
+                        </ButtonImageDelete>
+                      </>
                     )}
                   </div>
                 )}
@@ -608,22 +627,21 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
             </div>
           </Content>
           <Content show={indiceMenu === 3}>
-          <Editor
-                  value={editorContent}
-                  apiKey="vrzyvdpq0s7ufjhjrhrcysrwkvwwk2tbzrpq02d7k5m1knqg"
-                  onEditorChange={handleEditorChange}
-                  init={{
-                    plugins:
-                      'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
-                    toolbar:
-                      'code undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-                    autosave_ask_before_unload: true,
-                    fullscreen_native: true,
-                    image_advtab: true,
-                    importcss_append: true,
-                    
-                  }}
-                />
+            <Editor
+              value={editorContent}
+              apiKey="vrzyvdpq0s7ufjhjrhrcysrwkvwwk2tbzrpq02d7k5m1knqg"
+              onEditorChange={handleEditorChange}
+              init={{
+                plugins:
+                  'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+                toolbar:
+                  'code undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                autosave_ask_before_unload: true,
+                fullscreen_native: true,
+                image_advtab: true,
+                importcss_append: true,
+              }}
+            />
           </Content>
         </ContentMenu>
       </Container>

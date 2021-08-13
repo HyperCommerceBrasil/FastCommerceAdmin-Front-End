@@ -30,6 +30,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: 8px;
+  width: 100%;
 
   label {
     margin: 4px 2px;

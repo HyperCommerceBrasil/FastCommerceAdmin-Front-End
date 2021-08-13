@@ -355,6 +355,10 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                       name="is_active"
                       id="is_active"
                       label="Ativo"
+                      style={{
+                        margin: 'auto'
+                      }}
+                      
                     ></Checkbox>
                   </div>
 

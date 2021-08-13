@@ -31,7 +31,7 @@ const Checkbox: React.FC<InputProps> = ({
 
   return (
     <>
-      <Container>
+      <Container {...rest} id="container">
         <Field type="checkbox" {...rest}>
           {children}
         </Field>

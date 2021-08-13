@@ -113,11 +113,7 @@ export const ContentForm = styled.div`
   width: 100%;
 
   
-  div {
 
-    width: 100%;
-    
-  }
 `;
 
 export const FormGroup = styled.div`

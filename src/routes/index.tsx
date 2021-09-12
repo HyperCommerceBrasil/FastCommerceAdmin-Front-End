@@ -17,6 +17,10 @@ const Login = lazy(() => import('../pages/Login'));
 
 const UpdateProduct = lazy(() => import('../pages/Products/UpdateProduct/'));
 
+const ListOrders = lazy(() => import('../pages/Orders/ListOrders'));
+const OrderDetail = lazy(() => import('../pages/Orders/OrderDetail'));
+
+const ListSupplier = lazy(() => import('../pages/Supplier'));
 
 const LoadingBackground: React.FC = () => (
   <Backdrop
@@ -45,7 +49,6 @@ const Routes: React.FC = () => (
         exact
       />
       <Route
-
         path="/customers"
         isPrivate
         component={() => <ListCustomer />}
@@ -64,7 +67,6 @@ const Routes: React.FC = () => (
         exact
       />
 
-      
       <Route
         path="/products/update/:idProduct"
         isPrivate
@@ -72,7 +74,20 @@ const Routes: React.FC = () => (
         exact
       />
 
+      <Route path="/orders" exact isPrivate component={() => <ListOrders />} />
+      <Route
+        path="/orders/:orderId"
+        isPrivate
+        component={() => <OrderDetail />}
+      />
+
       <Route path="/register" component={() => <Register />} exact />
+      <Route
+        path="/suppliers"
+        isPrivate
+        component={() => <ListSupplier />}
+        exact
+      />
       <Route
         path="/login"
         isPrivate={false}

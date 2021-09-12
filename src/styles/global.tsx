@@ -4,7 +4,7 @@ import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import '@react-page/editor/lib/index.css';
-
+import 'react-toastify/dist/ReactToastify.css';
 
 export default createGlobalStyle`
   * {

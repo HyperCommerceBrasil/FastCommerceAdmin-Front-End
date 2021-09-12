@@ -7,6 +7,7 @@ import {
   FaDollarSign,
   FaChevronRight,
   FaUsers,
+  FaPeopleCarry,
 } from 'react-icons/fa';
 
 import Accordion from '@material-ui/core/Accordion';
@@ -50,6 +51,13 @@ const Layout: React.FC<MenuProps> = ({ children, isVisible }) => {
           <AccordionSummary>
             <Link to="/customers">
               <FaUsers size={16} /> Clientes
+            </Link>
+          </AccordionSummary>
+        </MenuItem>
+        <MenuItem>
+          <AccordionSummary>
+            <Link to="/suppliers">
+              <FaPeopleCarry size={16} /> Fornecedores
             </Link>
           </AccordionSummary>
         </MenuItem>
@@ -110,15 +118,15 @@ const Layout: React.FC<MenuProps> = ({ children, isVisible }) => {
                 height: '24px',
               }}
             >
-              <Link to="/">
-                <FaDollarSign size={16} /> Vendas
-              </Link>
+              <FaDollarSign size={16} /> Vendas
             </AccordionSummary>
 
             <DropdownItems>
               <AccordionDetails id="dropdownmenu">
                 <ul>
-                  <li>Pedidos</li>
+                  <li>
+                    <Link to="/orders">Pedidos</Link>
+                  </li>
                   <li>Pagamentos</li>
                 </ul>
               </AccordionDetails>

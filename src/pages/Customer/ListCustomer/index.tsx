@@ -31,7 +31,7 @@ interface IResponse {
 const ListCustomer: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [numPages, setNumPages] = useState(0);
+
   const [loadForm, setLoadForm] = useState(false);
 
   const handleSaveCustomer = useCallback(async data => {
@@ -68,14 +68,13 @@ const ListCustomer: React.FC = () => {
         );
 
         setCustomers(customers.data.customers);
-        setNumPages(customers.data.totalPages);
       } catch (err) {
         error(err.response.data.message);
       }
     }
 
     getCustomers();
-  }, [pageLink, numPages]);
+  }, [pageLink]);
 
   const history = useHistory();
 
@@ -149,11 +148,7 @@ const ListCustomer: React.FC = () => {
               marginLeft: 'auto',
               width: '100%',
             }}
-          >
-            <>
-              <Paginate nPages={numPages} />
-            </>
-          </div>
+          ></div>
         </Container>
       </Layout>
     </>

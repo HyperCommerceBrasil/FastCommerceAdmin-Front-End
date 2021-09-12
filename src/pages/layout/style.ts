@@ -9,7 +9,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
 
   header {
     display: flex;
@@ -20,8 +19,6 @@ export const Container = styled.div`
     padding: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
-
-    
   }
   svg {
     color: #34a3d7;

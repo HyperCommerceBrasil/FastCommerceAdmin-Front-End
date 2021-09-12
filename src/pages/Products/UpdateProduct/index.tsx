@@ -9,6 +9,7 @@ import Layout from '../../layout';
 import FormProduct from '../FormProduct';
 
 import Loader from './../../../components/Loader/SpinnerLoader';
+import { toast } from 'react-toastify';
 
 interface Collection {
   id: string;
@@ -36,6 +37,8 @@ interface Product {
   details: string;
   collectionId: string;
   isFreeShipping: boolean;
+  supplierId: string;
+  typeStorage: string;
 }
 const NewProduct: React.FC = () => {
   const [product, setProduct] = useState<Product>({} as Product);
@@ -116,7 +119,7 @@ const NewProduct: React.FC = () => {
           await api.post('products/upload/image', dataFile4);
         }
 
-        success('Registro Atualizado com sucesso');
+        toast('Registro Atualizado com sucesso');
         setStatusLoad(false);
         const responseProduct = await api.get<Product>(
           `/products/listone/${idProduct}`,

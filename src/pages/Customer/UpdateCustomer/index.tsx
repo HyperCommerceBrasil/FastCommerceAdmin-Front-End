@@ -15,6 +15,7 @@ import Card from '../../../components/Card';
 import Button from '../../../components/Button';
 import ModalCustom from '../../../components/Modal';
 import { resolveResponse } from '../../../utils/resolverResponse';
+import { toast } from 'react-toastify';
 
 interface Address {
   id: string;
@@ -125,7 +126,7 @@ const ListCustomer: React.FC = () => {
         const response = await api.put(`/admin/customers/${idCustomer}`, data);
 
         if (response.data) {
-          success('Registro Atualizado com sucesso');
+          toast('Registro Atualizado com sucesso');
         }
       } catch (err) {
         if (err) error(err.response.data.message);
@@ -142,7 +143,7 @@ const ListCustomer: React.FC = () => {
           data,
         );
 
-        success('Registro Atualizado com sucesso');
+        toast('Registro Atualizado com sucesso');
         setShowModal(!showModal);
         const adressesCustomer = customer.adresses.map(addr => {
           if (addr.id === response.data.id) {

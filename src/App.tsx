@@ -5,14 +5,16 @@ import GlobalStyle from './styles/global';
 
 import Routes from './routes';
 import { AuthProvider } from './hooks/AuthContext';
+import { ToastContainer } from 'react-toastify';
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
-      <AuthProvider>
-         <Routes />
-      </AuthProvider>
-         
+        <AuthProvider>
+          <Routes />
+          <ToastContainer theme="dark" />
+        </AuthProvider>
+
         <GlobalStyle />
       </BrowserRouter>
     </>

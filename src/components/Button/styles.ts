@@ -27,6 +27,7 @@ export const ButtonCustom = styled.button<ButtonProps>`
   border: transparent;
   padding: 10px;
   transition: ease-in-out 0.3s;
+  overflow: hidden;
 
   &:hover {
     opacity: 0.7;

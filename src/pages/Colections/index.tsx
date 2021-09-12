@@ -29,6 +29,7 @@ import {
 import ModalCustom from '../../components/Modal';
 import api from '../../services/api';
 import Layout from '../layout';
+import { toast } from 'react-toastify';
 
 // import Card from '../../components/Card';
 
@@ -207,9 +208,8 @@ const Collection: React.FC = () => {
                               setLoader(true);
                               await handleDeleteCollection(collect.id);
                               setLoader(false);
-                              success({
-                                text: 'Registro deletado com sucesso !',
-                                closerHover: true,
+                              toast('Registro deletado com sucesso !', {
+                                type: 'success',
                               });
                             }
                           }}

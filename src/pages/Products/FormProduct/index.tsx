@@ -6,6 +6,7 @@ import Select from './../../../components/Select';
 import * as Yup from 'yup';
 import Checkbox from './../../../components/Checkbox';
 import { confirmAlert } from 'react-confirm-alert';
+import Switch from './../../../components/Switch';
 
 import { error, success } from '@pnotify/core';
 import { Form, Formik } from 'formik';
@@ -25,6 +26,7 @@ import Button from '../../../components/Button';
 import { resolveResponse } from '../../../utils/resolverResponse';
 import { FaArrowLeft, FaTrash } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface Collection {
   id: string;
@@ -52,15 +54,22 @@ interface Product {
   collectionId: string;
   collection: Collection;
   isFreeShipping: boolean;
+  supplierId: string;
+  typeStorage: string;
 }
 
 interface FormProps {
   functionAction: any;
   product?: Product;
 }
+interface Supplier {
+  id: string;
+  name: string;
+}
 
 const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [editorContent, setEditorContent] = useState('');
   const [imageProduct1, setImageProduct1] = useState('');
   const [imageProduct2, setImageProduct2] = useState('');
@@ -84,16 +93,21 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
   );
 
   useEffect(() => {
-    async function getCollection(): Promise<void> {
+    async function getData(): Promise<void> {
       try {
         const response = await api.get<Collection[]>('collections');
+        const response2 = await api.get<Supplier[]>('suppliers');
         setCollections(response.data);
-      } catch {
-        error('Ocorreu um erro, atualize a página e tente novamente :(');
+        setSuppliers(response2.data);
+      } catch (err) {
+        const msg = resolveResponse(err);
+        toast(msg, {
+          type: 'error',
+        });
       }
     }
 
-    getCollection();
+    getData();
 
     if (product && product.name) {
       setImageProduct1(product.images[0]?.image || '');
@@ -126,7 +140,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
       } catch (err) {
         const msg = resolveResponse(err.reponse);
         if (err) {
-          success(msg);
+          toast(msg, { type: 'error' });
         }
       }
     },
@@ -237,6 +251,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
       .required('Campo obrigatório')
       .matches(/[0-9]/, 'A quantidade precisa ser um numero'),
     collectionId: Yup.string().required('Informe a Coleção'),
+    supplierId: Yup.string().required('Informe o Fornecedor'),
   });
 
   return (
@@ -256,6 +271,8 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
               quantity: product?.quantity || '',
               isFreeShipping: product?.isFreeShipping || false,
               collectionId: product?.collection?.id || '',
+              supplierId: product?.supplierId || '',
+              typeStorage: product?.typeStorage || '',
             }}
             validateOnBlur={false}
             validateOnChange={false}
@@ -268,13 +285,13 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                 imageProduct3 === '' &&
                 imageProduct4 === ''
               ) {
-                error({
-                  title: 'Erro ao gravar',
-                  text: 'Por favor informe pelo menos uma imagem',
+                toast('Por favor informe pelo menos uma imagem', {
+                  type: 'info',
                 });
                 setIndiceMenu(2);
               } else {
                 data.details = editorContent;
+                console.log(data);
                 const numberFormated1 =
                   Number(data.price.replace(/\D+/g, '')) / 100;
                 const numberFormated2 =
@@ -341,7 +358,6 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                     style={{
                       display: 'flex',
                       flexDirection: 'row',
-                      
                     }}
                   >
                     <Input
@@ -349,17 +365,15 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                       id="name"
                       placeholder="Nome do Produto"
                       label="Nome do Produto"
-                      style={{width: '100%'}}
+                      style={{ width: '100%' }}
                     />
-                    <Checkbox
+
+                    <Switch
                       name="is_active"
                       id="is_active"
                       label="Ativo"
-                      style={{
-                        margin: 'auto'
-                      }}
-                      
-                    ></Checkbox>
+                      color="primary"
+                    ></Switch>
                   </div>
 
                   <Input
@@ -404,6 +418,35 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                         </option>
                       );
                     })}
+                  </Select>
+
+                  <Select
+                    name="supplierId"
+                    id="supplierId"
+                    label="Fornecedor"
+                    placeholder="Fornecedor"
+                  >
+                    {suppliers.map(supplier => {
+                      return (
+                        <option key={supplier.id} value={supplier.id}>
+                          {supplier.name}
+                        </option>
+                      );
+                    })}
+                  </Select>
+
+                  <Select
+                    name="typeStorage"
+                    id="typeStorage"
+                    label="Tipo de Armazenagem"
+                    placeholder="Tipo de Armazenagem"
+                  >
+                    <option key="Dropshipping" value="Dropshipping">
+                      Dropshipping
+                    </option>
+                    <option key="Estoque Propio" value="Estoque Propio">
+                      Estoque Proprio
+                    </option>
                   </Select>
 
                   <fieldset
@@ -468,7 +511,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                                       product?.images[0].id,
                                       'image-1',
                                     );
-                                    success('Imagem Excluida com sucesso');
+                                    toast('Imagem Excluida com sucesso');
                                   },
                                 },
                                 {
@@ -515,7 +558,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                                       product?.images[1].id,
                                       'image-2',
                                     );
-                                    success('Imagem Excluida com sucesso');
+                                    toast('Imagem Excluida com sucesso');
                                   },
                                 },
                                 {
@@ -562,7 +605,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                                       product?.images[2].id,
                                       'image-3',
                                     );
-                                    success('Imagem Excluida com sucesso');
+                                    toast('Imagem Excluida com sucesso');
                                   },
                                 },
                                 {
@@ -609,7 +652,7 @@ const FormProduct: React.FC<FormProps> = ({ product, functionAction }) => {
                                       product?.images[3].id,
                                       'image-4',
                                     );
-                                    success('Imagem Excluida com sucesso');
+                                    toast('Imagem Excluida com sucesso');
                                   },
                                 },
                                 {

@@ -1,12 +1,14 @@
 // import { Link } from 'react-router-dom';
 import React, { useState, useCallback, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Pagination } from './style';
 
 interface PaginateProps {
   nPages: number;
+  route: string;
 }
 
-const Paginate: React.FC<PaginateProps> = ({ nPages }) => {
+const Paginate: React.FC<PaginateProps> = ({ nPages, route }) => {
   const pages = useState<number[]>([]);
 
   const generatePagination = useCallback(() => {
@@ -17,7 +19,7 @@ const Paginate: React.FC<PaginateProps> = ({ nPages }) => {
 
   useEffect(() => {
     generatePagination();
-  }, [nPages, pages, generatePagination]);
+  }, [pages]);
 
   return (
     <>
@@ -25,7 +27,7 @@ const Paginate: React.FC<PaginateProps> = ({ nPages }) => {
         {pages[0].map(page => {
           return (
             <li key={page}>
-              <a href={`/customers/?page=${page}`}>{page}</a>
+              <a href={`/${route}/?page=${page}`}>{page}</a>
             </li>
           );
         })}

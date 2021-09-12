@@ -19,6 +19,7 @@ interface Product {
   description: string;
   details: string;
   trending: boolean;
+  typeStorage: string;
 }
 const NewProduct: React.FC = () => {
   const [statusLoad, setStatusLoad] = useState(false);

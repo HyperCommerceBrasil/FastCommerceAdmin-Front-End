@@ -1,5 +1,5 @@
 import { Field, useField } from 'formik';
-import React, { HTMLAttributes, useEffect, useState } from 'react';
+import React, { HTMLAttributes, useState } from 'react';
 import { IconType } from 'react-icons';
 import { FaExclamationCircle } from 'react-icons/fa';
 import { Switch, FormControlLabel } from '@material-ui/core';

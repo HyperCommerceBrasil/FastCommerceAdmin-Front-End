@@ -8,7 +8,6 @@ import Checkbox from './../../../components/Checkbox';
 import { confirmAlert } from 'react-confirm-alert';
 import Switch from './../../../components/Switch';
 
-import { error, success } from '@pnotify/core';
 import { Form, Formik } from 'formik';
 import {
   Container,

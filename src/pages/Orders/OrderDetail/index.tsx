@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Content,
@@ -11,7 +11,6 @@ import {
 } from './styles';
 
 import Layout from '../../layout';
-import Loader from '../../../components/Loader/SpinnerLoader';
 import MenuTab from '../../../components/MenuTab';
 import Card from '../../../components/Card';
 import Button from '../../../components/Button';
@@ -37,7 +36,6 @@ interface Order {
 }
 
 const NewProduct: React.FC = () => {
-  const [statusLoad, setStatusLoad] = useState(false);
   const [indiceMenu, setIndiceMenu] = useState(1);
 
   useEffect(() => {}, []);
@@ -45,7 +43,6 @@ const NewProduct: React.FC = () => {
   return (
     <>
       <Layout>
-        <Loader show={statusLoad}></Loader>
         <Container>
           <header>
             <h1>Detalhes do Pedido</h1>

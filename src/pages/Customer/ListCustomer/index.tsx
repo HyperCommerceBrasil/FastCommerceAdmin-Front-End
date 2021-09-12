@@ -7,7 +7,6 @@ import { FaArrowLeft } from 'react-icons/fa';
 import api from '../../../services/api';
 import Layout from '../../layout';
 import Modal from '../../../components/Modal';
-import Paginate from '../../../components/paginate';
 import { formatCPF } from '../../../utils/masks/cpfMask';
 
 import FormCustomer from '../FormCustomer';

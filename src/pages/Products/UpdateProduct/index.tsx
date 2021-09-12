@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { error, success } from '@pnotify/core';
 import { useHistory, useParams } from 'react-router-dom';
 import { Container } from './styles';
 import api from '../../../services/api';
@@ -10,6 +9,7 @@ import FormProduct from '../FormProduct';
 
 import Loader from './../../../components/Loader/SpinnerLoader';
 import { toast } from 'react-toastify';
+import { resolveResponse } from '../../../utils/resolverResponse';
 
 interface Collection {
   id: string;
@@ -64,7 +64,10 @@ const NewProduct: React.FC = () => {
           }).format(Number(response.data.price_promotional)),
         });
       } catch (err) {
-        error(`Ocorreu um erro ao trazer os dados do produto`);
+        const msg = resolveResponse(err);
+        toast(msg, {
+          type: 'error',
+        });
 
         history.push('/products');
       }
@@ -139,7 +142,9 @@ const NewProduct: React.FC = () => {
       } catch (err) {
         setStatusLoad(false);
         dataFile.delete('productImage');
-        error('Ocorreu um erro ao salvar o produto verifique o console');
+        toast('Ocorreu um erro ao salvar o produto verifique o console', {
+          type: 'error',
+        });
 
         console.log(err);
       }

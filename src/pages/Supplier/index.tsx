@@ -11,7 +11,6 @@ import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
 import { resolveResponse } from '../../utils/resolverResponse';
-import Loader from './../../components/Loader/LinearLoader';
 
 interface Supplier {
   id: string;

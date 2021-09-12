@@ -4,7 +4,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TablePagination,
 } from '@material-ui/core';
 import React from 'react';
 import Card from '../Card';
@@ -39,6 +38,19 @@ interface DataTable {
 
 const TableMaterial: React.FC<DataTable> = ({ children, orders }) => {
   const [selected, setSelected] = useState<string[]>([]);
+
+  const parseStatusColor = useCallback((status: string) => {
+    switch (status) {
+      case '1':
+        return 'warning';
+      case '2':
+        return 'success';
+      case '3':
+        return 'danger';
+      case '4':
+        return 'warning';
+    }
+  }, []);
 
   const addSelectedItems = useCallback(
     newValue => {
@@ -98,7 +110,9 @@ const TableMaterial: React.FC<DataTable> = ({ children, orders }) => {
                   <TableCell>{order.numberOrder}</TableCell>
                   <TableCell>{order.customer.name}</TableCell>
                   <TableCell>
-                    <Label colorTheme="danger">{`${order.status.code} - ${order.status.description}`}</Label>
+                    <Label
+                      colorTheme={parseStatusColor(order.status.code)}
+                    >{`${order.status.code} - ${order.status.description}`}</Label>
                   </TableCell>
                   <TableCell>{order.created_at}</TableCell>
                 </TableRow>

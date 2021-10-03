@@ -76,7 +76,7 @@ const Routes: React.FC = () => (
 
       <Route path="/orders" exact isPrivate component={() => <ListOrders />} />
       <Route
-        path="/orders/:orderId"
+        path="/orders/:idOrder"
         isPrivate
         component={() => <OrderDetail />}
       />

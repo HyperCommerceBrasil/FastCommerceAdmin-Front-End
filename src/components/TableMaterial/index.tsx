@@ -13,6 +13,7 @@ import Label from '../Label';
 
 import { Container } from './styles';
 import { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 interface Status {
   code: string;
   description: string;
@@ -38,6 +39,8 @@ interface DataTable {
 
 const TableMaterial: React.FC<DataTable> = ({ children, orders }) => {
   const [selected, setSelected] = useState<string[]>([]);
+
+  const history = useHistory();
 
   const parseStatusColor = useCallback((status: string) => {
     switch (status) {
@@ -94,7 +97,15 @@ const TableMaterial: React.FC<DataTable> = ({ children, orders }) => {
           <TableBody>
             {orders.map(order => (
               <>
-                <TableRow key={order.id}>
+                <TableRow
+                  key={order.id}
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                  onDoubleClick={() => {
+                    history.push(`orders/${order.id}`);
+                  }}
+                >
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={isSelected(order.id)}
@@ -115,6 +126,16 @@ const TableMaterial: React.FC<DataTable> = ({ children, orders }) => {
                     >{`${order.status.code} - ${order.status.description}`}</Label>
                   </TableCell>
                   <TableCell>{order.created_at}</TableCell>
+                  <TableCell>
+                    <Button
+                      colorTheme="primary"
+                      onClick={() => {
+                        history.push(`/orders/${order.id}`);
+                      }}
+                    >
+                      Detalhar
+                    </Button>
+                  </TableCell>
                 </TableRow>
               </>
             ))}

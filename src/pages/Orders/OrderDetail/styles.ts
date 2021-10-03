@@ -24,6 +24,27 @@ export const Container = styled.div`
   }
 `;
 
+export const CardShipping = styled.div`
+  border-radius: 5px;
+  header {
+    display: flex;
+    flex-direction: row;
+    background: #f0f2f2;
+    height: 50px;
+    border-radius: 10px 10px 0 0;
+    border: 1px black solid;
+
+    span {
+      margin-left: auto;
+    }
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+`;
+
 export const Content = styled.div<ContentProps>`
   width: 100%;
   padding: 32px;
